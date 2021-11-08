@@ -1,0 +1,2708 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Matrix{
+    private int row;
+    private int coloumn;
+    private double[][] arr;
+    private double[] arr_1;
+    private double arr_2;
+    private String name;
+    private ArrayList Matrix_type = new ArrayList();
+
+    public Matrix(int row, int coloumn, double[][] arr, String name){
+        this.row = row;
+        this.coloumn = coloumn;
+        this.arr = arr;
+        this.name = name;
+
+    }
+    public Matrix(int row, int coloumn, double[] arr, String name){
+        this.row = row;
+        this.coloumn = coloumn;
+        this.arr_1= arr;
+        this.name = name;
+
+    }
+    public Matrix(int row, int coloumn, double arr, String name){
+        this.row = row;
+        this.coloumn = coloumn;
+        this.arr_2= arr;
+        this.name = name;
+
+    }
+    public Matrix(int row, int coloumn, String name) {
+        this.row = row;
+        this.coloumn = coloumn;
+        this.arr = arr;
+        this.name = name;
+    }
+
+
+    double[][] getArr(){
+        return arr;
+    }
+    double[] getArray(){
+        return arr_1;
+    }
+    double get_intArr(){
+        return this.arr_2;
+    }
+    int getRow(){
+        return this.row;
+    }
+    int getColoumn(){
+        return this.coloumn;
+    }
+    public String getName(){
+        return this.name;
+    }
+    void get_Row_mean(){
+        for(int i = 0;i< arr.length;i++){
+            System.out.print("Mean of row"+(i+1)+": ");
+            double mean = 0;
+            for(int j = 0;j< arr[i].length;j++){
+                mean += arr[i][j];
+            }
+            System.out.print(mean/arr[i].length);
+            System.out.println();
+        }
+    }
+    void get_Coloumn_mean(){
+        double[][] trans = transpose_1();
+        for(int i = 0;i< trans.length;i++){
+            System.out.print("Mean of row"+(i+1)+": ");
+            double mean = 0;
+            for(int j = 0;j< trans[i].length;j++){
+                mean += trans[i][j];
+            }
+            System.out.print(mean/trans[i].length);
+            System.out.println();
+        }
+    }
+    void Total_mean(){
+        System.out.print("Mean: ");
+        double mean = 0;
+        for(int i = 0;i< arr.length;i++){
+            for(int j = 0;j< arr[i].length;j++){
+                mean += arr[i][j];
+            }
+        }
+        System.out.println(mean/(getColoumn()*getRow()));
+    }
+    double[][] transpose_1(){
+        double[][] trans = new double[this.coloumn][this.row];
+        for(int i = 0;i< arr.length;i++){
+            for(int j = 0;j<arr[i].length;j++){
+                trans[i][j] = arr[j][i];
+            }
+        }
+        return trans;
+    }
+    void transpose_2(){
+        double[][] trans = new double[coloumn][row];
+        for(int i = 0;i< arr.length;i++){
+            for(int j = 0;j<arr[i].length;j++){
+                trans[i][j] = arr[j][i];
+            }
+        }
+        this.arr = trans;
+    }
+    void setMatrix_type(String x){
+        this.Matrix_type.add(x);
+    }
+    Matrix set_Matrix(){
+        Matrix m = new Matrix(this.row, this.coloumn,this.arr,this.name);
+        boolean flag1 = true;
+        boolean flag2 = true;
+        boolean flag3 = true;
+        boolean flag4 = true;
+        boolean flag5 = true;
+        boolean flag6 = true;
+        boolean flag7 = true;
+        for(int i = 0;i<this.row;i++){
+            for(int j = 0;j<this.coloumn;j++){
+                if(this.arr[i][j]!=0){
+                    flag1 = false;
+                }
+            }
+        }
+        if(flag1){
+            m = new Null_Matrix(this.row, this.coloumn, this.name);
+            return m;
+        }
+        for(int i = 0;i<this.row;i++){
+            for(int j = 0;j<this.coloumn;j++){
+                if(this.arr[i][j]!=1){
+                    flag2 = false;
+                }
+            }
+        }
+        if(flag2){
+            m = new Ones_Matrix(this.row, this.coloumn, this.name);
+            return m;
+        }
+        if(!flag1 && !flag2){
+            if(this.row!=this.coloumn){
+                if(this.row==1){
+                    m = new Row_Matrix(this.row, this.coloumn,this.arr, this.name);
+                    return m;
+                }
+                else if(this.coloumn==1){
+                    m = new Coloumn_Matrix(this.row, this.coloumn,this.arr, this.name);
+                    return m;
+                }
+                else{
+                    m = new Rectangular_Matrix(this.row, this.coloumn,this.arr, this.name);
+                    return m;
+                }
+            }
+            else{
+                if(this.row==1){
+                    m = new Singleton_Matrix(row, coloumn,arr, name);
+                    return m;
+                }
+                for(int i = 0;i<this.row;i++){
+                    for(int j = 0;j<this.coloumn;j++){
+                        if(i==j){
+                            if(this.arr[i][j]!=1){
+                                flag3 = false;
+                            }
+                        }
+                        else{
+                            if(this.arr[i][j]!=0){
+                                flag3 = false;
+                            }
+                        }
+                    }
+                }
+                if(flag3){
+                    m = new Identity_Matrix(this.row, this.coloumn, this.name);
+                    return m;
+                }
+                double[][] arr1 = transpose_1();
+                if(this.arr==transpose_1()){
+                    m = new Symmetric_Matrix( this.row, this.coloumn, this.arr, this.name);
+                    return m;
+                }
+                for(int i = 0;i<this.row;i++){
+                    for(int j = 0;j<this.coloumn;j++){
+                        arr1[i][j] = - arr[i][j];
+                    }
+                }
+                if(this.arr==arr1){
+                    m = new Skew_Symmetric_Matrix( this.row, this.coloumn, this.arr, this.name);
+                    return m;
+                }
+                for(int i = 0;i<this.row;i++){
+                    for(int j = 0;j<this.coloumn;j++){
+                        if(j>=i){
+                            if(this.arr[i][j]==0){
+                                flag4 = false;
+                            }
+                        }
+                        else{
+                            if(this.arr[i][j]!=0){
+                                flag4 = false;
+                            }
+                        }
+                    }
+                }
+                if(flag4){
+                    m = new Upper_Tringular_Matrix(this.row, this.coloumn,this.arr, this.name);
+                    return m;
+                }
+                for(int i = 0;i<this.row;i++){
+                    for(int j = 0;j<this.coloumn;j++){
+                        if(j<=i){
+                            if(this.arr[i][j]==0){
+                                flag5 = false;
+                            }
+                        }
+                        else{
+                            if(this.arr[i][j]!=0){
+                                flag5 = false;
+                            }
+                        }
+                    }
+                }
+                if(flag5){
+                    m = new Lower_Tringular_Matrix(this.row, this.coloumn,this.arr, this.name);
+                    return m;
+                }
+                for(int i = 0;i<this.row;i++){
+                    for(int j = 0;j<this.coloumn;j++){
+                        if(i==j){
+                            if(this.arr[i][j]==0){
+                                flag6 = false;
+                                flag7 = false;
+                            }
+                            if(i!=0 && this.arr[i][j]==this.arr[0][0]){
+                                flag7 = false;
+                            }
+                            if(i!=0 && this.arr[i][j]!=this.arr[0][0]){
+                                flag6 = false;
+                            }
+                        }
+                        else{
+                            if(this.arr[i][j]!=0){
+                                flag6 = false;
+                                flag7 = false;
+                            }
+                        }
+                    }
+                }
+                if(flag6){
+                    m = new Scalar_Matrix(this.row, this.coloumn,this.arr_2, this.name);
+                    return m;
+                }
+                if(flag7){
+                    double[] arr2 = new double[this.getRow()];
+                    if(this.getRow()==2){
+                        arr2[0] = this.arr[0][0];
+                        arr2[1] = this.arr[1][1];
+                    }
+                    if(this.getRow()==3){
+                        arr2[0] = this.arr[0][0];
+                        arr2[1] = this.arr[1][1];
+                        arr2[2] = this.arr[2][2];
+                    }
+                    m = new Diagonal_Matrix(this.row, this.coloumn,arr2, this.name);
+                    return m;
+                }
+                if(this.row!=1){
+                    m = new Square_Matrix(this.row, this.coloumn,this.arr, this.name);
+                    return m;
+                }
+            }
+        }
+        return null;
+    }
+    ArrayList get_Matrix_type(){
+        return this.Matrix_type;
+    }
+    void compute_transpose_addition(){
+        double[][] trans = transpose_1();
+        double[][] arr3 = new double[getRow()][getColoumn()];
+        for(int i = 0;i<arr.length;i++){
+            for(int j = 0;j<arr[i].length;j++){
+                arr3[i][j] = arr[i][j]+trans[i][j];
+            }
+        }
+        this.arr = arr3;
+    }
+    double[][] adj_2(){
+        double[][] adj = new double[2][2];
+        adj[0][0] = arr[1][1];
+        adj[1][1] = arr[0][0];
+        adj[0][1] = -arr[0][1];
+        adj[1][0] = -arr[1][0];
+        return adj;
+    }
+    double[][] adj_3(){
+        double[][] adj = new double[3][3];
+        double det1 = this.arr[1][1]*this.arr[2][2]-this.arr[1][2]*this.arr[2][1];
+        double det2 = -(this.arr[0][1]*this.arr[2][2]-this.arr[2][1]*this.arr[0][2]);
+        double det3 = (this.arr[0][1]*this.arr[1][2]-this.arr[1][1]*this.arr[0][2]);
+        double det4 = -(this.arr[1][0]*this.arr[2][2]-this.arr[2][0]*this.arr[1][2]);
+        double det5 = (this.arr[0][0]*this.arr[2][2]-this.arr[2][0]*this.arr[0][2]);
+        double det6 = -(this.arr[0][0]*this.arr[1][2]-this.arr[1][0]*this.arr[0][2]);
+        double det7 = (this.arr[1][0]*this.arr[2][1]-this.arr[2][0]*this.arr[1][1]);
+        double det8 = -(this.arr[0][0]*this.arr[2][1]-this.arr[2][0]*this.arr[0][1]);
+        double det9 = (this.arr[0][0]*this.arr[1][1]-this.arr[1][0]*this.arr[0][1]);
+        adj[0][0] = det1;
+        adj[0][1] = det2;
+        adj[0][2] = det3;
+        adj[1][0] = det4;
+        adj[1][1] = det5;
+        adj[1][2] = det6;
+        adj[2][0] = det7;
+        adj[2][1] = det8;
+        adj[2][2] = det9;
+        return adj;
+    }
+    double determinant(){
+        if(this.getRow()==this.getColoumn()){
+            if(this.getRow()==1){
+                return arr[0][0];
+            }
+            else if(this.getRow()==2){
+                return arr[0][0]*arr[1][1]-arr[0][1]*arr[1][0];
+            }
+            else if(this.getRow()==3){
+                return arr[0][0]*(arr[1][1]*arr[2][2]-arr[2][1]*arr[1][2]) - arr[0][1]*(arr[1][0]*arr[2][2]-arr[2][0]*arr[1][2])+ arr[0][2]*(arr[1][0]*arr[2][1]-arr[2][0]*arr[1][1]);
+            }
+        }
+        return 0;
+    }
+    void inverse_1(){
+        if(this.getRow()==this.getColoumn()){
+            if(this.getRow()==1){
+                double[][] inv = {{1}};
+                this.arr = inv;
+            }
+            if(this.getRow()==2){
+                double[][] adj = adj_2();
+                double det = this.determinant();
+                double[][] inv = new double[this.getRow()][this.getColoumn()];
+                if(det!=0){
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<this.getColoumn();j++){
+                            inv[i][j] = adj[i][j]/det;
+                        }
+                    }
+                    this.arr = inv;
+                }
+            }
+            if(this.getRow()==3){
+                double[][] adj = adj_3();
+                double det = this.determinant();
+                double[][] inv = new double[this.getRow()][this.getColoumn()];
+                if(det!=0){
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<this.getColoumn();j++){
+                            inv[i][j] = adj[i][j]/det;
+                        }
+                    }
+                    this.arr = inv;
+                }
+            }
+        }
+    }
+    double[][] inverse_2(){
+        if(this.getRow()==this.getColoumn()){
+            if(this.getRow()==1){
+                double[][] inv = {{1}};
+                return inv;
+            }
+            if(this.getRow()==2){
+                double[][] adj = adj_2();
+                double det = this.determinant();
+                double[][] inv = new double[this.getRow()][this.getColoumn()];
+                if(det!=0){
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<this.getColoumn();j++){
+                            inv[i][j] = adj[i][j]/det;
+                        }
+                    }
+                    return inv;
+                }
+            }
+            if(this.getRow()==3){
+                double[][] adj = adj_3();
+                double det = this.determinant();
+                double[][] inv = new double[this.getRow()][this.getColoumn()];
+                if(det!=0){
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<this.getColoumn();j++){
+                            inv[i][j] = adj[i][j]/det;
+                        }
+                    }
+                    return inv;
+                }
+            }
+        }
+        return null;
+    }
+    Matrix add(Matrix m1, String name){
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double[][] arr1 = this.getArr();
+            double[][] arr2 = m1.getArr();
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            for(int i = 0;i<this.getRow();i++){
+                for(int j = 0;j<this.getColoumn();j++){
+                    arr3[i][j] = arr1[i][j]+arr2[i][j];
+                }
+            }
+            Matrix m = set_Matrix();
+            return m;
+    }
+    else{
+        System.out.println("These matrices cannot be added");
+        return null;
+        }
+    }
+    Matrix sub(Matrix m1, String name){
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double[][] arr1 = this.getArr();
+            double[][] arr2 = m1.getArr();
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            for(int i = 0;i<this.getRow();i++){
+                for(int j = 0;j<this.getColoumn();j++){
+                    arr3[i][j] = arr1[i][j]-arr2[i][j];
+                }
+            }
+            Matrix m = set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("These matrices cannot be subtracted");
+            return null;
+        }
+    }
+    Matrix mul(Matrix m1, String name){
+        double[][] arr1 = this.getArr();
+        double[][] arr2 = m1.getArr();
+        if(this.getColoumn()==m1.getRow()){
+            double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
+            for(int i = 0;i<this.getRow();i++){
+                for(int j = 0;j<m1.getColoumn();j++) {
+                    for(int r = 0;r<m1.getColoumn();r++){
+                        arr3[i][j] += arr1[i][r]*arr2[r][j];
+                    }
+                }
+            }
+            Matrix m = set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("Matrices cannot be multiplied");
+            return null;
+        }
+    }
+    ArrayList eigenvalue(){
+        if(this.getRow()==this.getColoumn()){
+            double[][] eig = this.arr;
+            int lambda = 0;
+            Matrix m1 = new Matrix(this.getRow(),this.getColoumn(),eig,"x");
+            ArrayList res = new ArrayList();
+            double[][] arr1 = m1.getArr();
+            int count = 0;
+            while(count!=m1.getRow()) {
+                while (m1.determinant() != 0) {
+                    for (int i = 0; i < m1.getRow(); i++) {
+                        for (int j = 0; j < m1.getColoumn(); j++) {
+                            if (i == j) {
+                                arr1[i][j] -= 1;
+                            }
+                        }
+                    }
+                    lambda += 1;
+                }
+                res.add(lambda);
+                count += 1;
+            }
+            return res;
+        }
+        System.out.println("Cannot be acheived");
+        return null;
+
+    }
+    Matrix mul_1(Matrix m1, String name){
+        double[][] arr1 = this.getArr();
+        double[][] arr2 = m1.getArr();
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            for(int i = 0;i<this.getRow();i++){
+                for(int j =0;j<this.getColoumn();j++){
+                    arr3[i][j] = arr1[i][j]*arr2[i][j];
+                }
+            }
+            Matrix m = set_Matrix();
+            return m;
+        }
+        System.out.println("Cannot be multiplied");
+        return null;
+    }
+    Matrix div_1(Matrix m1, String name){
+        double[][] arr1 = this.getArr();
+        double[][] arr2 = m1.getArr();
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            for(int i = 0;i<this.getRow();i++){
+                for(int j =0;j<this.getColoumn();j++){
+                    arr3[i][j] = arr1[i][j]/arr2[i][j];
+                }
+            }
+            Matrix m = set_Matrix();
+            return m;
+        }
+        System.out.println("Cannot be divided");
+        return null;
+    }
+    void compute_transpose_addition_1(){
+        double[] a = getArray();
+        for(int i = 0;i<a.length;i++){
+            a[i] *= 2;
+        }
+        arr_1 = a;
+    }
+    void compute_transpose_addition_2(){
+        double a = get_intArr();
+        arr_2 = 2*a;
+    }
+
+}
+class Rectangular_Matrix extends Matrix{
+    public Rectangular_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Rectangular Matrix");
+    }
+    double[][] getArr(){
+        return super.getArr();
+    }
+    public String getName(){
+        return super.getName();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+}
+class Square_Matrix extends Matrix{
+    public Square_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Square Matrix");
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+    void compute_transpose_addition(){
+        super.compute_transpose_addition();
+    }
+    double[][] adj_2(){
+        return super.adj_2();
+    }
+    double[][] adj_3(){
+        return super.adj_3();
+    }
+    double determinant(){
+        return super.determinant();
+    }
+    void inverse_1(){
+        super.inverse_1();
+    }
+    double[][] inverse_2(){
+        return super.inverse_2();
+    }
+    Matrix add(Matrix m1, String name){
+        return super.add(m1,name);
+    }
+    Matrix sub(Matrix m1, String name){
+        return super.sub(m1,name);
+    }
+    Matrix mul(Matrix m1, String name){
+        return super.mul(m1,name);
+    }
+}
+class Row_Matrix extends Matrix{
+    public Row_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Row Matrix");
+        super.setMatrix_type("Rectangular Matrix");
+    }
+    double[][] getArr(){
+        return super.getArr();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public String getName(){
+        return super.getName();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+}
+class Coloumn_Matrix extends Matrix{
+
+    public Coloumn_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Coloumn Matrix");
+        super.setMatrix_type("Rectangular Matrix");
+    }
+    double[][] getArr(){
+        return super.getArr();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public String getName(){
+        return super.getName();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+}
+class Singleton_Matrix extends Matrix{
+    public Singleton_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Singleton Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+}
+class Null_Matrix extends Matrix{
+    public Null_Matrix(int row, int coloumn, String name) {
+        super(row, coloumn, name);
+        super.setMatrix_type("Null Matrix");
+        if(row==coloumn){
+            super.setMatrix_type("Square Matrix");
+        }
+        else{
+            super.setMatrix_type("Rectangular Matrix");
+        }
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        System.out.println(0);
+    }
+    public void get_Coloumn_mean(){
+        System.out.println(0);
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        System.out.println(0);
+    }
+}
+class Ones_Matrix extends Matrix{
+    public Ones_Matrix(int row, int coloumn, String name) {
+        super(row, coloumn, name);
+        super.setMatrix_type("Ones Matrix");
+        if(row==coloumn){
+            super.setMatrix_type("Square Matrix");
+        }
+        else{
+            super.setMatrix_type("Rectangular Matrix");
+        }
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        System.out.println(1);
+    }
+    public void get_Coloumn_mean(){
+        System.out.println(1);
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        System.out.println(1);
+    }
+}
+class Identity_Matrix extends Matrix{
+    public Identity_Matrix(int row, int coloumn, String name) {
+        super(row, coloumn, name);
+        super.setMatrix_type("Identity Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    double[] getArray(){
+        return super.getArray();
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    @Override
+    public void get_Row_mean(){
+        for(int i = 0;i< super.getArray().length;i++){
+            System.out.print("Mean of row"+(i+1)+": ");
+            System.out.print(1/getRow());
+            System.out.println();
+        }
+    }
+    @Override
+    public void get_Coloumn_mean(){
+        for(int i = 0;i< super.getArray().length;i++){
+            System.out.print("Mean of coloumn"+(i+1)+": ");
+            System.out.print(1/getRow());
+            System.out.println();
+        }
+    }
+    @Override
+    public double[][] transpose_1(){
+        double[][] d = new double[this.getRow()][this.getColoumn()];
+        for(int i = 0;i<this.getRow();i++){
+            for(int j = 0;j<this.getColoumn();j++){
+                if(i!=j){
+                    d[i][j] = 0;
+                }
+                else{
+                    d[i][j] = 1;
+                }
+            }
+        }
+        return d;
+    }
+    @Override
+    public void transpose_2(){
+    }
+    @Override
+    public void Total_mean(){
+        System.out.print("Mean: ");
+        System.out.println(3/(getColoumn()*getRow()));
+    }
+    void compute_transpose_addition_1(){super.compute_transpose_addition_1();
+    }//???????????????
+    @Override
+    double[][] adj_2(){
+        double[][] adj = new double[2][2];
+        adj[0][0] = 1;
+        adj[1][1] = 1;
+        adj[0][1] = 0;
+        adj[1][0] = 0;
+        return adj;
+    }
+    @Override
+    double[][] adj_3(){
+        double[][] adj = new double[3][3];
+        double det1 = 1;
+        double det2 = 0;
+        double det3 = 0;
+        double det4 = 0;
+        double det5 = 1;
+        double det6 = 0;
+        double det7 = 0;
+        double det8 = 0;
+        double det9 = 1;
+        adj[0][0] = det1;
+        adj[0][1] = det2;
+        adj[0][2] = det3;
+        adj[1][0] = det4;
+        adj[1][1] = det5;
+        adj[1][2] = det6;
+        adj[2][0] = det7;
+        adj[2][1] = det8;
+        adj[2][2] = det9;
+        return adj;
+    }
+    @Override
+    double determinant(){
+        return 1;
+    }
+    void inverse_1(){
+        super.inverse_1();
+    }
+    double[][] inverse_2(){
+        return super.inverse_2();
+    }
+    @Override
+    Matrix add(Matrix m1, String name){
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double[] arr1 = this.getArray();
+            boolean flag1 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            if(flag1){
+                double[][] arr2 = m1.getArr();
+
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]+arr2[i][j];
+                        }
+                        else{
+                            arr3[i][j] = arr2[i][j];
+                        }
+                    }
+                }
+            }
+            else{
+                double[] arr2 = m1.getArray();
+
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]+arr2[i];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+            Matrix m = x1.set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("These matrices cannot be added");
+            return null;
+        }
+    }
+    @Override
+    Matrix sub(Matrix m1, String name){
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double[] arr1 = this.getArray();
+            boolean flag1 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            if(flag1){
+                double[][] arr2 = m1.getArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]-arr2[i][j];
+                        }
+                        else{
+                            arr3[i][j] = arr2[i][j];
+                        }
+                    }
+                }
+            }
+            else{
+                double[] arr2 = m1.getArray();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]-arr2[i];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+            Matrix m = x1.set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("These matrices cannot be subtracted");
+            return null;
+        }
+    }
+    @Override
+    Matrix mul(Matrix m1, String name){
+        double[] arr1 = this.getArray();
+        if(this.getColoumn()==m1.getRow()){
+            boolean flag1 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            if(flag1){
+                double[][] arr2 = m1.getArr();
+                double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        arr3[i][j] += arr1[i]*arr2[i][j];
+                    }
+                }
+                Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+                Matrix m = x1.set_Matrix();
+                return m;
+            }
+            else{
+                double[] arr2 = m1.getArray();
+                double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        if(i==j){
+                            arr3[i][j] += arr1[i]*arr2[j];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+                Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+                Matrix m = x1.set_Matrix();
+                return m;
+            }
+        }
+        else{
+            System.out.println("Matrices cannot be multiplied");
+            return null;
+        }
+    }
+}
+class Symmetric_Matrix extends Matrix{
+    public Symmetric_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Symmetric Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+    void compute_transpose_addition(){
+         super.compute_transpose_addition();
+    }
+    double[][] adj_2(){
+        return super.adj_2();
+    }
+    double[][] adj_3(){
+        return super.adj_3();
+    }
+    double determinant(){
+        return super.determinant();
+    }
+    void inverse_1(){
+        super.inverse_1();
+    }
+    double[][] inverse_2(){
+        return super.inverse_2();
+    }
+    Matrix add(Matrix m1, String name){
+        return super.add(m1,name);
+    }
+    Matrix sub(Matrix m1, String name){
+        return super.sub(m1,name);
+    }
+    Matrix mul(Matrix m1, String name){
+        return super.mul(m1,name);
+    }
+}
+class Skew_Symmetric_Matrix extends Matrix{
+    public Skew_Symmetric_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Skew Symmetric Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+    void compute_transpose_addition(){
+         super.compute_transpose_addition();
+    }
+    double[][] adj_2(){
+        return super.adj_2();
+    }
+    double[][] adj_3(){
+        return super.adj_3();
+    }
+    double determinant(){
+        return super.determinant();
+    }
+    void inverse_1(){
+        super.inverse_1();
+    }
+    double[][] inverse_2(){
+        return super.inverse_2();
+    }
+    Matrix add(Matrix m1, String name){
+        return super.add(m1,name);
+    }
+    Matrix sub(Matrix m1, String name){
+        return super.sub(m1,name);
+    }
+    Matrix mul(Matrix m1, String name){
+        return super.mul(m1,name);
+    }
+}
+class Upper_Tringular_Matrix extends Matrix{
+    public Upper_Tringular_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Upper Tringular Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+    void compute_transpose_addition(){
+         super.compute_transpose_addition();
+    }
+    double[][] adj_2(){
+        return super.adj_2();
+    }
+    double[][] adj_3(){
+        return super.adj_3();
+    }
+    double determinant(){
+        return super.determinant();
+    }
+    void inverse_1(){
+        super.inverse_1();
+    }
+    double[][] inverse_2(){
+        return super.inverse_2();
+    }
+    Matrix add(Matrix m1, String name){
+        return super.add(m1,name);
+    }
+    Matrix sub(Matrix m1, String name){
+        return super.sub(m1,name);
+    }
+    Matrix mul(Matrix m1, String name){
+        return super.mul(m1,name);
+    }
+}
+class Lower_Tringular_Matrix extends Matrix{
+    public Lower_Tringular_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Lower Tringular Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void transpose_2(){
+        super.transpose_2();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+    void compute_transpose_addition(){
+        super.compute_transpose_addition();
+    }
+    double[][] adj_2(){
+        return super.adj_2();
+    }
+    double[][] adj_3(){
+        return super.adj_3();
+    }
+    double determinant(){
+        return super.determinant();
+    }
+    void inverse_1(){
+        super.inverse_1();
+    }
+    double[][] inverse_2(){
+        return super.inverse_2();
+    }
+    Matrix add(Matrix m1, String name){
+        return super.add(m1,name);
+    }
+    Matrix sub(Matrix m1, String name){
+        return super.sub(m1,name);
+    }
+    Matrix mul(Matrix m1, String name){
+        return super.mul(m1,name);
+    }
+}
+class Scalar_Matrix extends Matrix{
+    public Scalar_Matrix(int row, int coloumn, double arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Scalar Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    double get_intArr(){
+        return super.get_intArr();
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    @Override
+    public void get_Row_mean(){
+        for(int i = 0;i< getRow();i++){
+            System.out.print("Mean of row"+(i+1)+": ");
+            System.out.print(super.get_intArr()/getRow());
+            System.out.println();
+        }
+    }
+    @Override
+    public void get_Coloumn_mean(){
+        for(int i = 0;i< getRow();i++){
+            System.out.print("Mean of coloumn"+(i+1)+": ");
+            System.out.print(super.get_intArr()/getRow());
+            System.out.println();
+        }
+    }
+    @Override
+    public double[][] transpose_1(){
+        double[][] d = new double[this.getRow()][this.getColoumn()];
+        for(int i = 0;i<this.getRow();i++){
+            for(int j = 0;j<this.getColoumn();j++){
+                if(i!=j){
+                    d[i][j] = 0;
+                }
+                else{
+                    d[i][j] = super.get_intArr();
+                }
+            }
+        }
+        return d;
+    }
+    @Override
+    public void transpose_2(){
+    }
+    @Override
+    public void Total_mean(){
+        System.out.print("Mean: ");
+        double mean = super.get_intArr()*3;
+        System.out.println(mean/(getColoumn()*getRow()));
+    }
+    @Override
+    void compute_transpose_addition_2(){
+        super.compute_transpose_addition_2();
+    }
+    @Override
+    double[][] adj_2(){
+        double[][] adj = new double[2][2];
+        adj[0][0] = super.get_intArr();
+        adj[1][1] = super.get_intArr();
+        adj[0][1] = 0;
+        adj[1][0] = 0;
+        return adj;
+    }
+    @Override
+    double[][] adj_3(){
+        double[][] adj = new double[3][3];
+        double x = super.get_intArr();
+        double det1 = x*x;
+        double det2 = 0;
+        double det3 = 0;
+        double det4 = 0;
+        double det5 = x*x;
+        double det6 = 0;
+        double det7 = 0;
+        double det8 = 0;
+        double det9 = x*x;
+        adj[0][0] = det1;
+        adj[0][1] = det2;
+        adj[0][2] = det3;
+        adj[1][0] = det4;
+        adj[1][1] = det5;
+        adj[1][2] = det6;
+        adj[2][0] = det7;
+        adj[2][1] = det8;
+        adj[2][2] = det9;
+        return adj;
+    }
+    @Override
+    double determinant(){
+        double x = super.get_intArr();
+        if(getRow()==2){
+            return (x)*(x);
+        }
+        else if(getRow()==3){
+            return (x)*(x)*(x);
+        }
+        return 0;
+    }
+    void inverse_1(){
+        super.inverse_1();
+    }
+    double[][] inverse_2(){
+        return super.inverse_2();
+    }
+    @Override
+    Matrix add(Matrix m1, String name){
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double arr1 = this.get_intArr();
+            boolean flag1 = true;
+            boolean flag2 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Scalar Matrix")){
+                    flag2 = false;
+                }
+            }
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            if(!flag1){
+                double[] arr2 = m1.getArray();
+
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1+arr2[i];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            if(!flag2){
+                double arr2 = m1.get_intArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1+arr2;
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            else{
+                double[][] arr2 = m1.getArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1+arr2[i][j];
+                        }
+                        else{
+                            arr3[i][j] = arr2[i][j];
+                        }
+                    }
+                }
+            }
+            Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+            Matrix m = x1.set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("These matrices cannot be added");
+            return null;
+        }
+    }
+    @Override
+    Matrix sub(Matrix m1, String name){
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double arr1 = this.get_intArr();
+            boolean flag1 = true;
+            boolean flag2 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Scalar Matrix")){
+                    flag2 = false;
+                }
+            }
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            if(!flag1){
+                double[] arr2 = m1.getArray();
+
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1-arr2[i];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            if(!flag2){
+                double arr2 = m1.get_intArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1-arr2;
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            else{
+                double[][] arr2 = m1.getArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1-arr2[i][j];
+                        }
+                        else{
+                            arr3[i][j] = arr2[i][j];
+                        }
+                    }
+                }
+            }
+            Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+            Matrix m = x1.set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("These matrices cannot be subtracted");
+            return null;
+        }
+    }
+    @Override
+    Matrix mul(Matrix m1, String name){
+        double arr1 = this.get_intArr();
+        if(this.getColoumn()==m1.getRow()){
+            boolean flag1 = true;
+            boolean flag2 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Scalar Matrix")){
+                    flag2 = false;
+                }
+            }
+            if(!flag1){
+                double[] arr2 = m1.getArray();
+                double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        if(i==j){
+                            arr3[i][j] += arr1*arr2[j];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+                Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+                Matrix m = x1.set_Matrix();
+                return m;
+            }
+            if(!flag2) {
+                double arr2 = m1.get_intArr();
+                double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        if(i==j){
+                            arr3[i][j] += arr1*arr2;
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+                Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+                Matrix m = x1.set_Matrix();
+                return m;
+            }
+            else{
+                double[][] arr2 = m1.getArr();
+                double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        arr3[i][j] += arr1*arr2[i][j];
+                    }
+                }
+                Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+                Matrix m = x1.set_Matrix();
+                return m;
+            }
+        }
+        else{
+            System.out.println("Matrices cannot be multiplied");
+            return null;
+        }
+    }
+    
+}
+class Diagonal_Matrix extends Matrix{
+    public Diagonal_Matrix(int row, int coloumn, double[] arr, String name) {
+        super(row, coloumn,arr, name);
+        super.setMatrix_type("Diagonal Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    double[] getArray(){
+        return super.getArray();
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    @Override
+    public void get_Row_mean(){
+        for(int i = 0;i< super.getArray().length;i++){
+            System.out.print("Mean of row"+(i+1)+": ");
+            System.out.print(super.getArray()[i]/getRow());
+            System.out.println();
+        }
+    }
+    @Override
+    public void get_Coloumn_mean(){
+        for(int i = 0;i< super.getArray().length;i++){
+            System.out.print("Mean of coloumn"+(i+1)+": ");
+            System.out.print(super.getArray()[i]/getRow());
+            System.out.println();
+        }
+    }
+    @Override
+    public double[][] transpose_1(){
+        double[][] d = new double[this.getRow()][this.getColoumn()];
+        for(int i = 0;i<this.getRow();i++){
+            for(int j = 0;j<this.getColoumn();j++){
+                if(i!=j){
+                    d[i][j] = 0;
+                }
+                else{
+                    d[i][j] = super.getArray()[i];
+                }
+            }
+        }
+        return d;
+    }
+    @Override
+    public void transpose_2(){
+    }
+    @Override
+    public void Total_mean(){
+        System.out.print("Mean: ");
+        double mean = 0;
+        for(int i = 0;i< super.getArray().length;i++){
+            mean += super.getArray()[i];
+        }
+        System.out.println(mean/(getColoumn()*getRow()));
+    }
+    void compute_transpose_addition_1(){super.compute_transpose_addition_1();
+    }
+    @Override
+    double[][] adj_2(){
+        double[][] adj = new double[2][2];
+        adj[0][0] = super.getArray()[1];
+        adj[1][1] = super.getArray()[0];
+        adj[0][1] = 0;
+        adj[1][0] = 0;
+        return adj;
+    }
+    @Override
+    double[][] adj_3(){
+        double[][] adj = new double[3][3];
+        double det1 = super.getArray()[1]*super.getArray()[2];
+        double det2 = 0;
+        double det3 = 0;
+        double det4 = 0;
+        double det5 = (super.getArray()[0]*super.getArray()[2]);
+        double det6 = 0;
+        double det7 = 0;
+        double det8 = 0;
+        double det9 = (super.getArray()[0]*super.getArray()[1]);
+        adj[0][0] = det1;
+        adj[0][1] = det2;
+        adj[0][2] = det3;
+        adj[1][0] = det4;
+        adj[1][1] = det5;
+        adj[1][2] = det6;
+        adj[2][0] = det7;
+        adj[2][1] = det8;
+        adj[2][2] = det9;
+        return adj;
+    }
+    @Override
+    double determinant(){
+        if(getRow()==2){
+            return (super.getArray()[0])*(super.getArray()[1]);
+        }
+        else if(getRow()==3){
+            return (super.getArray()[0])*(super.getArray()[1])*(super.getArray()[2]);
+        }
+        return 0;
+    }
+    void inverse_1(){
+        super.inverse_1();
+    }
+    double[][] inverse_2(){
+        return super.inverse_2();
+    }
+    @Override
+    Matrix add(Matrix m1, String name){
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double[] arr1 = this.getArray();
+            boolean flag1 = true;
+            boolean flag2 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Scalar Matrix")){
+                    flag2 = false;
+                }
+            }
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            if(!flag1){
+                double[] arr2 = m1.getArray();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]-arr2[i];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            if(!flag2){
+                double arr2 = m1.get_intArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]-arr2;
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            else{
+                double[][] arr2 = m1.getArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]-arr2[i][j];
+                        }
+                        else{
+                            arr3[i][j] = arr2[i][j];
+                        }
+                    }
+                }
+            }
+            Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+            Matrix m = x1.set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("These matrices cannot be added");
+            return null;
+        }
+    }
+    @Override
+    Matrix sub(Matrix m1, String name){
+        if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
+            double[] arr1 = this.getArray();
+            boolean flag1 = true;
+            boolean flag2 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Scalar Matrix")){
+                    flag2 = false;
+                }
+            }
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            if(!flag1){
+                double[] arr2 = m1.getArray();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]-arr2[i];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            if(!flag2){
+                double arr2 = m1.get_intArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]-arr2;
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            else{
+                double[][] arr2 = m1.getArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<this.getColoumn();j++){
+                        if(i==j){
+                            arr3[i][j] = arr1[i]-arr2[i][j];
+                        }
+                        else{
+                            arr3[i][j] = arr2[i][j];
+                        }
+                    }
+                }
+            }
+            Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+            Matrix m = x1.set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("These matrices cannot be subtracted");
+            return null;
+        }
+    }
+    @Override
+    Matrix mul(Matrix m1, String name){
+        double[] arr1 = this.getArray();
+        if(this.getColoumn()==m1.getRow()){
+            boolean flag1 = true;
+            boolean flag2 = true;
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+            }
+            for(int i = 0;i<get_Matrix_type().size();i++){
+                if(get_Matrix_type().get(i).equals("Scalar Matrix")){
+                    flag2 = false;
+                }
+            }
+            double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
+            if(!flag1){
+                double[] arr2 = m1.getArray();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        if(i==j){
+                            arr3[i][j] += arr1[i]*arr2[j];
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            if(!flag2){
+                double arr2 = m1.get_intArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        if(i==j){
+                            arr3[i][j] += arr1[i]*arr2;
+                        }
+                        else{
+                            arr3[i][j] = 0;
+                        }
+                    }
+                }
+            }
+            else{
+                double[][] arr2 = m1.getArr();
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        arr3[i][j] += arr1[i]*arr2[i][j];
+                    }
+                }
+            }
+            Matrix x1 = new Matrix(getRow(),getColoumn(),arr3,"Temp");
+            Matrix m = x1.set_Matrix();
+            return m;
+        }
+        else{
+            System.out.println("Matrices cannot be multiplied");
+            return null;
+        }
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        boolean flag = true;
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Matrix> matrices = new ArrayList();
+        while(flag){
+            printMenu();
+            int x = sc.nextInt();
+            if(x==1){
+                System.out.println("Enter name");
+                String name = sc.next();
+                System.out.println("Enter no. of rows: ");
+                int row = sc.nextInt();
+                System.out.println("Enter no. of coloumns: ");
+                int coloumn = sc.nextInt();
+                double[][] arr = new double[row][coloumn];
+                System.out.println("Enter elements of matrix");
+                for(int i = 0;i<row;i++){
+                    System.out.println("Enter elements of "+(i+1)+"th row");
+                    for(int j = 0;j<coloumn;j++){
+                        arr[i][j] = sc.nextInt();
+                    }
+                }
+                Matrix m = new Matrix(row,coloumn,arr,name);
+                Matrix x1 = m.set_Matrix();
+                matrices.add(x1);
+            }
+            if(x==2){
+                System.out.println("Enter name");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                System.out.println("Enter row of element to be changed:");
+                int r = sc.nextInt();
+                System.out.println("Enter coloumn of element to be changed:");
+                int c = sc.nextInt();
+                double[][] arr= x1.getArr();
+                System.out.println("Enter element to be replaced with:");
+                int rep = sc.nextInt();
+                arr[r-1][c-1] = rep;
+                Matrix m = new Matrix(x1.getRow(),x1.getColoumn(),arr,name);
+                Matrix x2 = m.set_Matrix();
+                matrices.add(x1);
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        matrices.set(i,x2);
+                        System.out.println("Matrice changed");
+                    }
+                }
+            }
+            if(x==3){
+                System.out.println("----------------");
+                System.out.println("1. Addition");
+                System.out.println("2. Subtraction");
+                System.out.println("3. Multiplication");
+                System.out.println("4. Division");
+
+                int inp = sc.nextInt();
+
+                if(inp==1){
+                    System.out.println("Enter name of new matrix:");
+                    String name = sc.next();
+                    System.out.println("Enter name of matrix1");
+                    String name1 = sc.next();
+                    System.out.println("Enter name of matrix2");
+                    String name2 = sc.next();
+                    Matrix x1 = null;
+                    Matrix x2 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name1)){
+                            x1 = matrices.get(i);
+                        }
+                        if(matrices.get(i).getName().equals(name2)){
+                            x2 = matrices.get(i);
+                        }
+                    }
+                    Matrix x3 = x1.add(x2,name);
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.getArray()[i]+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    if(!flag2){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.get_intArr()+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    else{
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                System.out.print(x3.getArr()[i][j]+" | ");
+                            }
+                            System.out.println();
+                        }
+                    }
+                }
+                if(inp==2){
+                    System.out.println("Enter name of new matrix:");
+                    String name = sc.next();
+                    System.out.println("Enter name of matrix1");
+                    String name1 = sc.next();
+                    System.out.println("Enter name of matrix2");
+                    String name2 = sc.next();
+                    Matrix x1 = null;
+                    Matrix x2 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name1)){
+                            x1 = matrices.get(i);
+                        }
+                        if(matrices.get(i).getName().equals(name2)){
+                            x2 = matrices.get(i);
+                        }
+                    }
+                    Matrix x3 = x1.sub(x2,name);
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.getArray()[i]+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    if(!flag2){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.get_intArr()+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    else{
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                System.out.print(x3.getArr()[i][j]+" | ");
+                            }
+                            System.out.println();
+                        }
+                    }
+                }
+                if(inp==3){
+                    System.out.println("Enter name of new matrix:");
+                    String name = sc.next();
+                    System.out.println("Enter name of matrix1");
+                    String name1 = sc.next();
+                    System.out.println("Enter name of matrix2");
+                    String name2 = sc.next();
+                    Matrix x1 = null;
+                    Matrix x2 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name1)){
+                            x1 = matrices.get(i);
+                        }
+                        if(matrices.get(i).getName().equals(name2)){
+                            x2 = matrices.get(i);
+                        }
+                    }
+                    Matrix x3 = x1.mul(x2,name);
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.getArray()[i]+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    if(!flag2){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.get_intArr()+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    else{
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                System.out.print(x3.getArr()[i][j]+" | ");
+                            }
+                            System.out.println();
+                        }
+                    }
+                }
+                if(inp==4){
+                    System.out.println("Enter name of new matrix:");
+                    String name = sc.next();
+                    System.out.println("Enter name of matrix1");
+                    String name1 = sc.next();
+                    System.out.println("Enter name of matrix2");
+                    String name2 = sc.next();
+                    Matrix x1 = null;
+                    Matrix x2 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name1)){
+                            x1 = matrices.get(i);
+                        }
+                        if(matrices.get(i).getName().equals(name2)){
+                            x2 = matrices.get(i);
+                        }
+                    }
+                    double[][] arr2 = x2.inverse_2();
+                    Matrix x3 = new Matrix(x2.getRow(),x2.getColoumn(),arr2,x2.getName()+"_inv");
+                    Matrix x4 = x1.mul(x3,name);
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.getArray()[i]+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    if(!flag2){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.get_intArr()+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    else{
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                System.out.print(x3.getArr()[i][j]+" | ");
+                            }
+                            System.out.println();
+                        }
+                    }
+                }
+            }
+            if(x==4){
+                System.out.println("----------------");
+                System.out.println("1. Element wise Addition");
+                System.out.println("2. Element wise Subtraction");
+                System.out.println("3. Element wise Multiplication");
+                System.out.println("4. Element wise Division");
+
+                int n = sc.nextInt();
+                if(n==1){
+                    System.out.println("Enter name of new matrix:");
+                    String name = sc.next();
+                    System.out.println("Enter name of matrix1");
+                    String name1 = sc.next();
+                    System.out.println("Enter name of matrix2");
+                    String name2 = sc.next();
+                    Matrix x1 = null;
+                    Matrix x2 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name1)){
+                            x1 = matrices.get(i);
+                        }
+                        if(matrices.get(i).getName().equals(name2)){
+                            x2 = matrices.get(i);
+                        }
+                    }
+                    Matrix x3 = x1.add(x2,name);
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.getArray()[i]+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    if(!flag2){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.get_intArr()+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    else{
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                System.out.print(x3.getArr()[i][j]+" | ");
+                            }
+                            System.out.println();
+                        }
+                    }
+                }
+                if(n==2){
+                    System.out.println("Enter name of new matrix:");
+                    String name = sc.next();
+                    System.out.println("Enter name of matrix1");
+                    String name1 = sc.next();
+                    System.out.println("Enter name of matrix2");
+                    String name2 = sc.next();
+                    Matrix x1 = null;
+                    Matrix x2 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name1)){
+                            x1 = matrices.get(i);
+                        }
+                        if(matrices.get(i).getName().equals(name2)){
+                            x2 = matrices.get(i);
+                        }
+                    }
+                    Matrix x3 = x1.sub(x2,name);
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.getArray()[i]+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    if(!flag2){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.get_intArr()+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    else{
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                System.out.print(x3.getArr()[i][j]+" | ");
+                            }
+                            System.out.println();
+                        }
+                    }
+                }
+                if(n==3){
+                    System.out.println("Enter name of new matrix:");
+                    String name = sc.next();
+                    System.out.println("Enter name of matrix1");
+                    String name1 = sc.next();
+                    System.out.println("Enter name of matrix2");
+                    String name2 = sc.next();
+                    Matrix x1 = null;
+                    Matrix x2 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name1)){
+                            x1 = matrices.get(i);
+                        }
+                        if(matrices.get(i).getName().equals(name2)){
+                            x2 = matrices.get(i);
+                        }
+                    }
+                    Matrix x3 = x1.mul_1(x2,name);
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.getArray()[i]+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    if(!flag2){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.get_intArr()+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    else{
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                System.out.print(x3.getArr()[i][j]+" | ");
+                            }
+                            System.out.println();
+                        }
+                    }
+                }
+                if(n==4){
+                    System.out.println("Enter name of new matrix:");
+                    String name = sc.next();
+                    System.out.println("Enter name of matrix1");
+                    String name1 = sc.next();
+                    System.out.println("Enter name of matrix2");
+                    String name2 = sc.next();
+                    Matrix x1 = null;
+                    Matrix x2 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name1)){
+                            x1 = matrices.get(i);
+                        }
+                        if(matrices.get(i).getName().equals(name2)){
+                            x2 = matrices.get(i);
+                        }
+                    }
+                    Matrix x3 = x1.div_1(x2,name);
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x3.get_Matrix_type().size();i++){
+                        if(x3.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.getArray()[i]+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    if(!flag2){
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                if(i==j){
+                                    System.out.print(x3.get_intArr()+" | ");
+                                }
+                                else{
+                                    System.out.print(0.0+" | ");
+                                }
+                            }
+                            System.out.println();
+                        }
+                    }
+                    else{
+                        for(int i = 0;i< x3.getRow();i++){
+                            for(int j = 0;j<x3.getColoumn();j++){
+                                System.out.print(x3.getArr()[i][j]+" | ");
+                            }
+                            System.out.println();
+                        }
+                    }
+                }
+            }
+            if(x==15){
+                System.out.println("Enter name");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                for(int i = 0;i< x1.getRow();i++){
+                    for(int j = 0;j<x1.getColoumn();j++){
+                        System.out.print(x1.getArr()[i][j]+" | ");
+                    }
+                    System.out.println();
+                }
+            }
+            if(x==7){
+                System.out.println("----------------");
+                System.out.println("1. Row-wise mean");
+                System.out.println("2. Coloumn-wise mean");
+                System.out.println("3. Mean of all elements");
+
+                int n = sc.nextInt();
+                if(n==1){
+                    System.out.println("Enter name of Matrix: ");
+                    String name = sc.next();
+                    Matrix x1 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            x1 = matrices.get(i);
+                        }
+                    }
+                    x1.get_Row_mean();
+                }
+                if(n==2){
+                    System.out.println("Enter name of Matrix: ");
+                    String name = sc.next();
+                    Matrix x1 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            x1 = matrices.get(i);
+                        }
+                    }
+                    x1.get_Coloumn_mean();
+                }
+                if(n==3){
+                    System.out.println("Enter name of Matrix: ");
+                    String name = sc.next();
+                    Matrix x1 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            x1 = matrices.get(i);
+                        }
+                    }
+                    x1.Total_mean();
+                }
+            }
+            if(x==5){
+                System.out.println("Enter name of Matrix: ");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                x1.transpose_2();
+                boolean flag1 = true;
+                for(int i = 0;i<x1.get_Matrix_type().size();i++){
+                    if(x1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                        flag1 = false;
+                    }
+                }
+                if(flag1){
+                    for(int i = 0;i< x1.getRow();i++){
+                        for(int j = 0;j<x1.getColoumn();j++){
+                            System.out.print(x1.getArr()[i][j]+" | ");
+                        }
+                        System.out.println();
+                    }
+                }
+                else{
+                    for(int i = 0;i< x1.getRow();i++){
+                        for(int j = 0;j<x1.getColoumn();j++){
+                            if(i==j){
+                                System.out.print(x1.getArray()[i]+" | ");
+                            }
+                            else{
+                                System.out.print(0.0+" | ");
+                            }
+                        }
+                        System.out.println();
+                    }
+                }
+                System.out.println("Matrice transposed");
+            }
+            if(x==6){
+                System.out.println("Enter name of Matrix: ");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                x1.inverse_1();
+                for(int i = 0;i< x1.getRow();i++){
+                    for(int j = 0;j<x1.getColoumn();j++){
+                        System.out.print(x1.getArr()[i][j]+" | ");
+                    }
+                    System.out.println();
+                }
+            }
+            if(x==8){
+                System.out.println("Enter id:");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i= 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                System.out.println(x1.determinant());
+            }
+            if(x==9){
+                System.out.println("Enter name of Matrix: ");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                ArrayList A = x1.get_Matrix_type();
+                for(int i = 0;i<A.size();i++){
+                    System.out.println(A.get(i));
+                }
+            }
+            if(x==10){
+                System.out.println("Enter name of Matrix: ");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                if(x1.getRow()==x1.getColoumn()){
+                    boolean flag1 = true;
+                    boolean flag2 = true;
+                    for(int i = 0;i<x1.get_Matrix_type().size();i++){
+                        if(x1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                            flag1 = false;
+                        }
+                    }
+                    for(int i = 0;i<x1.get_Matrix_type().size();i++){
+                        if(x1.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                            flag2 = false;
+                        }
+                    }
+                    if(!flag1){
+                        x1.compute_transpose_addition_1();
+                    }
+                    if(!flag2){
+                        x1.compute_transpose_addition_2();
+                    }
+                    else{
+                        x1.compute_transpose_addition();
+                    }
+                }
+                else{
+                    System.out.println("Transpose addition cannot happen");
+                }
+            }
+            if(x==14){
+                flag = false;
+            }
+            if(x==11){
+                System.out.println("Enter name of Matrix: ");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                ArrayList c = x1.eigenvalue();
+                if(c!=null){
+                    for(int i = 0;i<c.size();i++){
+                        System.out.print(c.get(i)+" ");
+                    }
+                }
+                System.out.println();
+            } //??????????????????????
+            if(x==12){
+                System.out.println("Enter no. of equations");
+                int n = sc.nextInt();
+                System.out.println("Enter no. of variables");
+                int n1 = sc.nextInt();
+                double[][] arr = new double[n][n1];
+                double[][] arr1 = new double[n][1];
+                for(int i = 0;i<n;i++){
+                    System.out.println("Enter equation "+(i+1));
+                    for(int j = 0;j < n1; j++){
+                        System.out.println("Enter coefficient of x"+(j+1));
+                        arr[i][j] = sc.nextInt();
+                    }
+                    System.out.println("Enter consonant");
+                    arr1[i][0] = sc.nextInt();
+                }
+                Matrix m = new Matrix(n,n1,arr,"Temp");
+                Matrix m1 = new Matrix(n,1,arr1,"Temp1");
+                double[][] arr2 = m.inverse_2();
+                Matrix x3 = new Matrix(m.getRow(),m.getColoumn(),arr2,m.getName()+"_inv");
+                Matrix x4 = x3.mul(m1,"Temp");
+                double[][] res = x4.getArr();
+                for(int i = 0;i<x4.getRow();i++){
+                    for(int j = 0;j<x4.getColoumn();j++){
+                        System.out.println("Value of x"+(i+1) +" = "+res[i][j]);
+                    }
+                }
+            }
+            if(x==13){
+                System.out.println("Enter requested matrix-type labels");
+                String type = sc.next();
+                for(int i = 0;i<matrices.size();i++){
+                    for(int j = 0;j< matrices.get(i).get_Matrix_type().size();j++){
+                        if(matrices.get(i).get_Matrix_type().get(j).equals(type)){
+                            System.out.println(matrices.get(i).getName());
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    public static void printMenu(){
+        System.out.println("------------------");
+        System.out.println("1. Create Matrix");
+        System.out.println("2. Change elements of Matrices");
+        System.out.println("3. Math operations on Matrices");
+        System.out.println("4. Element wise operation on matrices");
+        System.out.println("5. Transpose Matrix");
+        System.out.println("6. Inverse Matrix");
+        System.out.println("7. Compute means");
+        System.out.println("8. Compute determinants");
+        System.out.println("9. Display Labels");
+        System.out.println("10. A + A(T)");
+        System.out.println("11. Compute Eigen Value");
+        System.out.println("12. Solve linear equations");
+        System.out.println("13. Retrieve all the existing matrices (entered or created) having requested matrix-type labels.");
+        System.out.println("14. Exit");
+    }
+}
