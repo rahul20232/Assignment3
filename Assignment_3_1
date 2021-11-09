@@ -197,16 +197,28 @@ class Matrix{
                     return m;
                 }
                 double[][] arr1 = transpose_1();
-                if(this.arr==transpose_1()){
+                boolean yes = false;
+                for(int i = 0;i<this.row;i++){
+                    for(int j = 0;j<this.coloumn;j++){
+                        if(this.arr[i][j]!=arr1[i][j]){
+                            yes = true;
+                        }
+                    }
+                }
+                if(!yes){
                     m = new Symmetric_Matrix( this.row, this.coloumn, this.arr, this.name);
                     return m;
                 }
+
+                boolean yes1 = false;
                 for(int i = 0;i<this.row;i++){
                     for(int j = 0;j<this.coloumn;j++){
-                        arr1[i][j] = - arr[i][j];
+                        if(this.arr[i][j]!=-arr1[i][j]){
+                            yes1 = true;
+                        }
                     }
                 }
-                if(this.arr==arr1){
+                if(!yes1){
                     m = new Skew_Symmetric_Matrix( this.row, this.coloumn, this.arr, this.name);
                     return m;
                 }
@@ -244,6 +256,10 @@ class Matrix{
                 }
                 if(flag5){
                     m = new Lower_Tringular_Matrix(this.row, this.coloumn,this.arr, this.name);
+                    return m;
+                }
+                if(determinant()==0){
+                    m = new Singular_Matrix(this.row, this.coloumn,this.arr, this.name);
                     return m;
                 }
                 for(int i = 0;i<this.row;i++){
@@ -1247,6 +1263,7 @@ class Null_Matrix extends Matrix{
         super(row, coloumn, name);
         super.setMatrix_type("Null Matrix");
         if(row==coloumn){
+            super.setMatrix_type("Singular Matrix");
             super.setMatrix_type("Square Matrix");
         }
         else{
@@ -1631,6 +1648,7 @@ class Ones_Matrix extends Matrix{
         super(row, coloumn, name);
         super.setMatrix_type("Ones Matrix");
         if(row==coloumn){
+            super.setMatrix_type("Singular Matrix");
             super.setMatrix_type("Square Matrix");
         }
         else{
@@ -2176,6 +2194,9 @@ class Identity_Matrix extends Matrix{
     public Identity_Matrix(int row, int coloumn, String name) {
         super(row, coloumn, name);
         super.setMatrix_type("Identity Matrix");
+        super.setMatrix_type("Symmetric Matrix");
+        super.setMatrix_type("Scalar Matrix");
+        super.setMatrix_type("Diagonal Matrix");
         super.setMatrix_type("Square Matrix");
     }
     public int getRow(){
@@ -2990,6 +3011,60 @@ class Lower_Tringular_Matrix extends Matrix{
     }
     double[][] inverse_2(){
         return super.inverse_2();
+    }
+    double[][] add(Matrix m1){
+        return super.add(m1);
+    }
+    double[][] sub(Matrix m1){
+        return super.sub(m1);
+    }
+    double[][] mul(Matrix m1){
+        return super.mul(m1);
+    }
+    double[][] mul_1(Matrix m1){
+        return super.mul(m1);
+    }
+    double[][] div_1(Matrix m1){return super.div_1(m1);}
+
+}
+class Singular_Matrix extends Matrix{
+    public Singular_Matrix(int row, int coloumn, double[][] arr, String name) {
+        super(row, coloumn, arr, name);
+        super.setMatrix_type("Singular Matrix");
+        super.setMatrix_type("Square Matrix");
+    }
+    public int getRow(){
+        return super.getRow();
+    }
+    public int getColoumn(){
+        return super.getColoumn();
+    }
+    public ArrayList get_Matrix_type(){
+        return super.get_Matrix_type();
+    }
+    public void get_Row_mean(){
+        super.get_Row_mean();
+    }
+    public void get_Coloumn_mean(){
+        super.get_Coloumn_mean();
+    }
+    public double[][] transpose_1(){
+        return super.transpose_1();
+    }
+    public void Total_mean(){
+        super.Total_mean();
+    }
+    double[][] compute_transpose_addition(){
+        return super.compute_transpose_addition();
+    }
+    double[][] adj_2(){
+        return super.adj_2();
+    }
+    double[][] adj_3(){
+        return super.adj_3();
+    }
+    double determinant(){
+        return super.determinant();
     }
     double[][] add(Matrix m1){
         return super.add(m1);
