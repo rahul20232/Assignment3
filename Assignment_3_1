@@ -500,7 +500,93 @@ class Matrix{
         System.out.println("Cannot be divided");
         return null;
     }
-    
+    double[][] scale(Matrix m1){
+        double d = this.get_intArr();
+        boolean flag1 = true;
+        boolean flag2 = true;
+        boolean flag3 = true;
+        boolean flag4 = true;
+        boolean flag5 = true;
+        double[][] arr3 = new double[m1.getRow()][m1.getColoumn()];
+        for(int i = 0;i<m1.get_Matrix_type().size();i++){
+            if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                flag1 = false;
+            }
+            if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                flag2 = false;
+            }
+            if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
+                flag3 = false;
+            }
+            if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
+                flag4 = false;
+            }
+            if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
+                flag5 = false;
+            }
+        }
+        if(!flag5){
+            for(int i = 0;i<m1.getRow();i++){
+                for(int j = 0;j<m1.getColoumn();j++){
+                    arr3[i][j] = 0;
+                }
+            }
+        }
+        else if(!flag4){
+            for(int i = 0;i<m1.getRow();i++){
+                for(int j = 0;j<m1.getColoumn();j++){
+                    arr3[i][j] = d;
+                }
+            }
+        }
+        else if(!flag3){
+            for(int i = 0;i<m1.getRow();i++){
+                for(int j = 0;j<m1.getColoumn();j++){
+                    if(i==j){
+                        arr3[i][j] = d;
+                    }
+                    else{
+                        arr3[i][j] = 0;
+                    }
+                }
+            }
+        }
+        else if(!flag2){
+            double d1 = m1.get_intArr();
+            for(int i = 0;i<m1.getRow();i++){
+                for(int j = 0;j<m1.getColoumn();j++){
+                    if(i==j){
+                        arr3[i][j] = d*d1;
+                    }
+                    else{
+                        arr3[i][j] = 0;
+                    }
+                }
+            }
+        }
+        else if(!flag1){
+            double[] d1 = m1.getArray();
+            for(int i = 0;i<m1.getRow();i++){
+                for(int j = 0;j<m1.getColoumn();j++){
+                    if(i==j){
+                        arr3[i][j] = d*d1[i];
+                    }
+                    else{
+                        arr3[i][j] = 0;
+                    }
+                }
+            }
+        }
+        else{
+            double[][] d1 = m1.getArr();
+            for(int i = 0;i<m1.getRow();i++){
+                for(int j = 0;j<m1.getColoumn();j++){
+                    arr3[i][j] = d*d1[i][j];
+                }
+            }
+        }
+        return arr3;
+    }
 }
 class Rectangular_Matrix extends Matrix{
     public Rectangular_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -543,6 +629,10 @@ class Rectangular_Matrix extends Matrix{
     double[][] mul(Matrix m1){
         return super.mul(m1);
     }
+    double[][] mul_1(Matrix m1){
+        return super.mul(m1);
+    }
+    double[][] div_1(Matrix m1){return super.div_1(m1);}
 }
 class Square_Matrix extends Matrix{
     public Square_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -594,6 +684,10 @@ class Square_Matrix extends Matrix{
     double[][] mul(Matrix m1){
         return super.mul(m1);
     }
+    double[][] mul_1(Matrix m1){
+        return super.mul(m1);
+    }
+    double[][] div_1(Matrix m1){return super.div_1(m1);}
 }
 class Row_Matrix extends Matrix{
     public Row_Matrix(int row, int coloumn, double[] arr, String name) {
@@ -699,23 +793,15 @@ class Row_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -933,8 +1019,6 @@ class Coloumn_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -1153,6 +1237,10 @@ class Singleton_Matrix extends Matrix{
         System.out.println("Cannot be divided");
         return null;
     }
+
+    double[][] scale(Matrix m1){
+        return super.scale(m1);
+    }
 }
 class Null_Matrix extends Matrix{
     public Null_Matrix(int row, int coloumn, String name) {
@@ -1257,23 +1345,15 @@ class Null_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -1354,23 +1434,15 @@ class Null_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -1657,23 +1729,15 @@ class Ones_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -1758,23 +1822,15 @@ class Ones_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -1859,23 +1915,15 @@ class Ones_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -2241,23 +2289,15 @@ class Identity_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -2357,23 +2397,15 @@ class Identity_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -2468,23 +2500,15 @@ class Identity_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -2806,6 +2830,11 @@ class Symmetric_Matrix extends Matrix{
     double[][] mul(Matrix m1){
         return super.mul(m1);
     }
+
+    double[][] mul_1(Matrix m1){
+        return super.mul(m1);
+    }
+    double[][] div_1(Matrix m1){return super.div_1(m1);}
 }
 class Skew_Symmetric_Matrix extends Matrix{
     public Skew_Symmetric_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -2858,6 +2887,11 @@ class Skew_Symmetric_Matrix extends Matrix{
     double[][] mul(Matrix m1){
         return super.mul(m1);
     }
+
+    double[][] mul_1(Matrix m1){
+        return super.mul(m1);
+    }
+    double[][] div_1(Matrix m1){return super.div_1(m1);}
 }
 class Upper_Tringular_Matrix extends Matrix{
     public Upper_Tringular_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -2910,6 +2944,10 @@ class Upper_Tringular_Matrix extends Matrix{
     double[][] mul(Matrix m1){
         return super.mul(m1);
     }
+    double[][] mul_1(Matrix m1){
+        return super.mul(m1);
+    }
+    double[][] div_1(Matrix m1){return super.div_1(m1);}
 }
 class Lower_Tringular_Matrix extends Matrix{
     public Lower_Tringular_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -2962,6 +3000,11 @@ class Lower_Tringular_Matrix extends Matrix{
     double[][] mul(Matrix m1){
         return super.mul(m1);
     }
+    double[][] mul_1(Matrix m1){
+        return super.mul(m1);
+    }
+    double[][] div_1(Matrix m1){return super.div_1(m1);}
+
 }
 class Scalar_Matrix extends Matrix{
     public Scalar_Matrix(int row, int coloumn, double arr, String name) {
@@ -3094,23 +3137,15 @@ class Scalar_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -3212,23 +3247,15 @@ class Scalar_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -3331,23 +3358,15 @@ class Scalar_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -3864,23 +3883,15 @@ class Diagonal_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -3981,23 +3992,15 @@ class Diagonal_Matrix extends Matrix{
                 if(m1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                     flag1 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Scalar Matrix")){
                     flag2 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Identity Matrix")){
                     flag3 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Ones Matrix")){
                     flag4 = false;
                 }
-            }
-            for(int i = 0;i<m1.get_Matrix_type().size();i++){
                 if(m1.get_Matrix_type().get(i).equals("Null Matrix")){
                     flag5 = false;
                 }
@@ -4799,7 +4802,15 @@ public class Main {
                         x2 = matrices.get(i);
                     }
                 }
-
+                double[][] x3 = x1.scale(x2);
+                if(x3!=null){
+                    for(int i = 0;i<x3.length;i++){
+                        for(int j = 0;j<x3[i].length;j++){
+                            System.out.print(x3[i][j]+" | ");
+                        }
+                        System.out.println();
+                    }
+                }
             }
         }
 
