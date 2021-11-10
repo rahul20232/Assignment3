@@ -4560,21 +4560,33 @@ public class Main {
             if(x==1){
                 System.out.println("Enter name");
                 String name = sc.next();
-                System.out.println("Enter no. of rows: ");
-                int row = sc.nextInt();
-                System.out.println("Enter no. of coloumns: ");
-                int coloumn = sc.nextInt();
-                double[][] arr = new double[row][coloumn];
-                System.out.println("Enter elements of matrix");
-                for(int i = 0;i<row;i++){
-                    System.out.println("Enter elements of "+(i+1)+"th row");
-                    for(int j = 0;j<coloumn;j++){
-                        arr[i][j] = sc.nextInt();
+                boolean flag1 = true;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        flag1 = false;
                     }
                 }
-                Matrix m = new Matrix(row,coloumn,arr,name);
-                Matrix x1 = m.set_Matrix();
-                matrices.add(x1);
+                if(flag1){
+                    System.out.println("Enter no. of rows: ");
+                    int row = sc.nextInt();
+                    System.out.println("Enter no. of coloumns: ");
+                    int coloumn = sc.nextInt();
+                    double[][] arr = new double[row][coloumn];
+                    System.out.println("Enter elements of matrix");
+                    for(int i = 0;i<row;i++){
+                        System.out.println("Enter elements of "+(i+1)+"th row");
+                        for(int j = 0;j<coloumn;j++){
+                            arr[i][j] = sc.nextInt();
+                        }
+                    }
+                    Matrix m = new Matrix(row,coloumn,arr,name);
+                    Matrix x1 = m.set_Matrix();
+                    matrices.add(x1);
+                }
+                else{
+                    System.out.println("Same name cannot be used");
+                }
+
 
             }
             if(x==2){
@@ -5069,18 +5081,6 @@ public class Main {
                     System.out.println("Cannot solve");
                 }
             }
-            if(x==15){
-                System.out.println("Enter requested matrix-type labels");
-                sc.nextLine();
-                String type = sc.nextLine();
-                for(int i = 0;i<matrices.size();i++){
-                    for(int j = 0;j< matrices.get(i).get_Matrix_type().size();j++){
-                        if(matrices.get(i).get_Matrix_type().get(j).equals(type)){
-                            System.out.println(matrices.get(i).getName());
-                        }
-                    }
-                }
-            }
             if(x==14){
                 System.out.print("Enter name of singleton matrice:");
                 String name = sc.next();
@@ -5106,10 +5106,414 @@ public class Main {
                     }
                 }
             }
+            if(x==15){
+                System.out.println("Enter requested matrix-type labels");
+                sc.nextLine();
+                String type = sc.nextLine();
+                for(int i = 0;i<matrices.size();i++){
+                    for(int j = 0;j< matrices.get(i).get_Matrix_type().size();j++){
+                        if(matrices.get(i).get_Matrix_type().get(j).equals(type)){
+                            System.out.println(matrices.get(i).getName());
+                        }
+                    }
+                }
+            }
             if(x==16){
-                flag = false;
+                System.out.println("Enter name");
+                String name = sc.next();
+                boolean flag1 = true;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        flag1 = false;
+                    }
+                }
+                if(flag1){
+                    print_1();
+                    int inp = sc.nextInt();
+                    if(inp==1){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row!=coloumn && row!=1 && coloumn!=1){
+                            double[][] arr = new double[row][coloumn];
+                            System.out.println("Enter elements of matrix");
+                            for(int i = 0;i<row;i++){
+                                System.out.println("Enter elements of "+(i+1)+"th row");
+                                for(int j = 0;j<coloumn;j++){
+                                    arr[i][j] = sc.nextInt();
+                                }
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==2){
+
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                            double[][] arr = new double[1][coloumn];
+                            System.out.println("Enter elements of matrix");
+                            for(int i = 0;i<1;i++){
+                                System.out.println("Enter elements of "+(i+1)+"th row");
+                                for(int j = 0;j<coloumn;j++){
+                                    arr[i][j] = sc.nextInt();
+                                }
+                            }
+                            Matrix m = new Matrix(1,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+
+                    }
+                    if(inp==3){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+
+                            double[][] arr = new double[row][1];
+                            System.out.println("Enter elements of matrix");
+                            for(int i = 0;i<row;i++){
+                                System.out.println("Enter elements of "+(i+1)+"th row");
+                                for(int j = 0;j<1;j++){
+                                    arr[i][j] = sc.nextInt();
+                                }
+                            }
+                            Matrix m = new Matrix(row,1,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+
+                    }
+                    if(inp==4){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            System.out.println("Enter elements of matrix");
+                            for(int i = 0;i<row;i++){
+                                System.out.println("Enter elements of "+(i+1)+"th row");
+                                for(int j = 0;j<coloumn;j++){
+                                    arr[i][j] = sc.nextInt();
+                                }
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==5){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            if(row==2){
+                                System.out.println("Enter elements of diagonal");
+                                arr[0][0] = sc.nextInt();
+                                arr[1][1] = sc.nextInt();
+                                System.out.println("Enter elements of first row");
+                                arr[0][0] = sc.nextInt();
+                                arr[0][1] = sc.nextInt();
+                                arr[1][0] = arr[0][1];
+                            }
+                            if(row==3){
+                                System.out.println("Enter elements of diagonal");
+                                arr[0][0] = sc.nextInt();
+                                arr[1][1] = sc.nextInt();
+                                arr[2][2] = sc.nextInt();
+                                System.out.println("Enter elements of first row");
+                                arr[0][0] = sc.nextInt();
+                                arr[0][1] = sc.nextInt();
+                                arr[0][2] = sc.nextInt();
+                                arr[1][0] = arr[0][1];
+                                arr[2][0] = arr[0][2];
+                                System.out.println("Enter elements of last coloumn ");
+                                arr[0][2] = sc.nextInt();
+                                arr[1][2] = sc.nextInt();
+                                arr[2][2] = sc.nextInt();
+                                arr[2][1] = arr[1][2];
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==6){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            if(row==2){
+                                arr[0][0] = 0;
+                                arr[1][1] = 0;
+                                System.out.println("Enter elements of first row");
+                                arr[0][0] = sc.nextInt();
+                                arr[0][1] = sc.nextInt();
+                                arr[1][0] = -arr[0][1];
+                            }
+                            if(row==3){
+                                arr[0][0] = 0;
+                                arr[1][1] = 0;
+                                arr[2][2] = 0;
+                                System.out.println("Enter elements of first row");
+                                arr[0][0] = sc.nextInt();
+                                arr[0][1] = sc.nextInt();
+                                arr[0][2] = sc.nextInt();
+                                arr[1][0] = -arr[0][1];
+                                arr[2][0] = -arr[0][2];
+                                System.out.println("Enter elements of last coloumn ");
+                                arr[0][2] = sc.nextInt();
+                                arr[1][2] = sc.nextInt();
+                                arr[2][2] = sc.nextInt();
+                                arr[2][1] = -arr[1][2];
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==7){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            System.out.println("Enter elements of matrix");
+                            for(int i = 0;i<row;i++){
+                                System.out.println("Enter elements of "+(i+1)+"th row");
+                                for(int j = 0;j<coloumn;j++){
+                                    arr[i][j] = sc.nextInt();
+                                }
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==8){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            System.out.println("Enter elements of matrix");
+                            for(int i = 0;i<row;i++){
+                                System.out.println("Enter elements of "+(i+1)+"th row");
+                                for(int j = 0;j<coloumn;j++){
+                                    arr[i][j] = sc.nextInt();
+                                }
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==9){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            System.out.println("Enter elements of matrix");
+                            for(int i = 0;i<row;i++){
+                                System.out.println("Enter elements of "+(i+1)+"th row");
+                                for(int j = 0;j<coloumn;j++){
+                                    arr[i][j] = sc.nextInt();
+                                }
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==10){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            if(row==2){
+                                System.out.println("Enter elements of diagonal");
+                                arr[0][0] = sc.nextInt();
+                                arr[1][1] = sc.nextInt();
+
+                                arr[0][1] = 0;
+                                arr[1][0] = 0;
+                            }
+                            if(row==3){
+                                System.out.println("Enter elements of diagonal");
+                                arr[0][0] = sc.nextInt();
+                                arr[1][1] = sc.nextInt();
+                                arr[2][2] = sc.nextInt();
+
+                                arr[0][1] = 0;
+                                arr[0][2] = 0;
+                                arr[1][0] = 0;
+                                arr[2][0] = 0;
+
+                                arr[1][2] = 0;
+                                arr[2][1] = 0;
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==11){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            if(row==2){
+                                System.out.println("Enter scalar value");
+                                double s = sc.nextInt();
+                                arr[0][0] = s;
+                                arr[1][1] = s;
+
+                                arr[0][1] = 0;
+                                arr[1][0] = 0;
+                            }
+                            if(row==3){
+                                System.out.println("Enter elements of diagonal");
+                                double s = sc.nextInt();
+                                arr[0][0] = s;
+                                arr[1][1] = s;
+                                arr[2][2] = s;
+
+                                arr[0][1] = 0;
+                                arr[0][2] = 0;
+                                arr[1][0] = 0;
+                                arr[2][0] = 0;
+
+                                arr[1][2] = 0;
+                                arr[2][1] = 0;
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==12){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        if(row==coloumn && row!=1){
+                            double[][] arr = new double[row][coloumn];
+                            if(row==2){
+                                arr[0][0] = 1;
+                                arr[1][1] = 1;
+
+                                arr[0][1] = 0;
+                                arr[1][0] = 0;
+                            }
+                            if(row==3){
+
+                                arr[0][0] = 1;
+                                arr[1][1] = 1;
+                                arr[2][2] = 1;
+
+                                arr[0][1] = 0;
+                                arr[0][2] = 0;
+                                arr[1][0] = 0;
+                                arr[2][0] = 0;
+
+                                arr[1][2] = 0;
+                                arr[2][1] = 0;
+                            }
+                            Matrix m = new Matrix(row,coloumn,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+                        }
+                        else{
+                            System.out.println("Cannot form matrice");
+                        }
+                    }
+                    if(inp==13){
+                            double[][] arr = new double[1][1];
+                            System.out.println("Enter value:");
+                            arr[0][0] = sc.nextInt();
+                            Matrix m = new Matrix(1,1,arr,name);
+                            Matrix x1 = m.set_Matrix();
+                            matrices.add(x1);
+
+                    }
+                    if(inp==14){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        double[][] arr = new double[row][coloumn];
+                        for(int i = 0;i<row;i++){
+                            for(int j = 0;j<coloumn;j++){
+                                arr[i][j] = 1;
+                            }
+                        }
+                        Matrix m = new Matrix(row,coloumn,arr,name);
+                        Matrix x1 = m.set_Matrix();
+                        matrices.add(x1);
+                    }
+                    if(inp==15){
+                        System.out.println("Enter no. of rows: ");
+                        int row = sc.nextInt();
+                        System.out.println("Enter no. of coloumns: ");
+                        int coloumn = sc.nextInt();
+                        double[][] arr = new double[row][coloumn];
+                        for(int i = 0;i<row;i++){
+                            for(int j = 0;j<coloumn;j++){
+                                arr[i][j] = 0;
+                            }
+                        }
+                        Matrix m = new Matrix(row,coloumn,arr,name);
+                        Matrix x1 = m.set_Matrix();
+                        matrices.add(x1);
+                    }
+                }
+                else{
+                    System.out.println("Same name cannot be used");
+                }
             }
             if(x==17){
+                flag = false;
+            }
+            if(x==18){
                 System.out.println("Enter name");
                 String name = sc.next();
                 Matrix x1 = null;
@@ -5145,6 +5549,25 @@ public class Main {
         System.out.println("13. Solve linear equations");
         System.out.println("14. Use singleton matrices as scalars");
         System.out.println("15. Retrieve all the existing matrices (entered or created) having requested matrix-type labels.");
-        System.out.println("16. Exit");
+        System.out.println("16. Create matrices of requested type");
+        System.out.println("17. Exit");
+    }
+    public static void print_1(){
+        System.out.println("Select which matrice to create");
+        System.out.println("1. Rectangular Matrix");
+        System.out.println("2. Row Matrix ") ;
+        System.out.println("3. Column Matrix");
+        System.out.println("4. Square Matrix");
+        System.out.println("5. Symmetric Matrix");
+        System.out.println("6. Skew-symmetric Matrix");
+        System.out.println("7. Upper-triangular Matrix");
+        System.out.println("8. Lower-triangular Matrix");
+        System.out.println("9. Singular Matrix");
+        System.out.println("10. Diagonal Matrix");
+        System.out.println("11. Scalar Matrix");
+        System.out.println("12. Identity Matrix");
+        System.out.println("13. Singleton Matrix");
+        System.out.println("14. Ones Matrix");
+        System.out.println("15. Null Matrix");
     }
 }
