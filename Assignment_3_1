@@ -621,10 +621,16 @@ class Matrix{
                 }
             }
             else if (!flag4){
-                for(int i = 0;i<this.getRow();i++){
+                double[][] arr_x = new double[m1.getRow()][m1.getColoumn()];
+                for(int i = 0;i<m1.getRow();i++){
                     for(int j = 0;j<m1.getColoumn();j++){
+                        arr_x[i][j] = 1;
+                    }
+                }
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
                         for(int r = 0;r<m1.getRow();r++){
-                            arr3[j][i] += arr1[j][r];
+                            arr3[i][j] += arr1[i][r]*arr_x[r][j];
                         }
                     }
                 }
@@ -638,9 +644,22 @@ class Matrix{
             }
             else if(!flag2){
                 double arr2 = m1.get_intArr();
-                for(int i = 0;i<this.getRow();i++){
+                double[][] arr_x = new double[m1.getRow()][m1.getColoumn()];
+                for(int i = 0;i<m1.getRow();i++){
                     for(int j = 0;j<m1.getColoumn();j++){
-                        arr3[i][j] = arr1[i][j]*arr2;
+                        if(i==j){
+                            arr_x[i][j] = arr2;
+                        }
+                        else{
+                            arr_x[i][j] = 0;
+                        }
+                    }
+                }
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        for(int r = 0;r<m1.getRow();r++){
+                            arr3[i][j] += arr1[i][r]*arr_x[r][j];
+                        }
                     }
                 }
             }
@@ -2354,15 +2373,17 @@ class Ones_Matrix extends Matrix{
             }
             else{
                 double[][] arr2 = m1.getArr();
+                double[][] arr_x = new double[this.getRow()][this.getColoumn()];
                 for(int i = 0;i<this.getRow();i++){
-                    for(int j = 0;j<m1.getColoumn();j++){
-                        for(int r = 0;r<m1.getColoumn();r++){
-                            if(i==j){
-                                arr3[i][j] += arr2[r][j];
-                            }
-                            else{
-                                arr3[i][j] += arr2[j][i];
-                            }
+                    for(int j = 0;j<this.getColoumn();j++){
+                        arr_x[i][j] = 1;
+                    }
+                }
+
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        for(int r = 0;r<m1.getRow();r++){
+                            arr3[i][j] += arr2[r][j]*arr_x[i][r];
                         }
                     }
                 }
