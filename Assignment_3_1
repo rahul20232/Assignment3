@@ -1076,7 +1076,7 @@ class Row_Matrix extends Matrix{
     public void get_Row_mean(){
         System.out.print("Mean of row1: ");
         double mean = 0;
-        for(int i = 0;i< getRow();i++){
+        for(int i = 0;i< getColoumn();i++){
             mean += getArray()[i];
         }
         System.out.print(mean/getColoumn());
@@ -1322,7 +1322,7 @@ class Coloumn_Matrix extends Matrix{
         double[][] tran = new double[getColoumn()][getRow()];
         for(int i = 0;i<tran.length;i++){
             for(int j = 0;j<tran[i].length;j++){
-                tran[i][j]= getArray()[i];
+                tran[i][j]= getArray()[j];
             }
         }
         return tran;
@@ -1339,15 +1339,15 @@ class Coloumn_Matrix extends Matrix{
     @Override
     double[][] add(Matrix m1){
         if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
-            double[] arr3 = new double[this.getRow()];
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
             double[] d = this.getArray();
             double[] d1 = m1.getArray();
             for(int i = 0;i<getRow();i++){
-                arr3[i] = d[i]+d1[i];
+                for(int j = 0;j<getColoumn();j++){
+                    arr3[i][j] = d[i]+d1[i];
+                }
             }
-            Matrix m = new Coloumn_Matrix(getRow(),getColoumn(),arr3,"Temp");
-            double[][] arr4 = m.transpose_1();
-            return arr4;
+            return arr3;
         }
         else{
             System.out.println("These matrices cannot be added");
@@ -1357,15 +1357,15 @@ class Coloumn_Matrix extends Matrix{
     @Override
     double[][] sub(Matrix m1){
         if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
-            double[] arr3 = new double[this.getRow()];
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
             double[] d = this.getArray();
             double[] d1 = m1.getArray();
             for(int i = 0;i<getRow();i++){
-                arr3[i] = d[i]-d1[i];
+                for(int j = 0;j<getColoumn();j++){
+                    arr3[i][j] = d[i]-d1[i];
+                }
             }
-            Matrix m = new Matrix(getRow(),getColoumn(),arr3,"Temp");
-            double[][] arr4 = m.transpose_1();
-            return arr4;
+            return arr3;
         }
         else{
             System.out.println("These matrices cannot be subtracted");
@@ -1422,15 +1422,15 @@ class Coloumn_Matrix extends Matrix{
     @Override
     double[][] mul_1(Matrix m1){
         if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
-            double[] arr3 = new double[this.getRow()];
-            double[] arr2 = m1.getArray();
-            double[] arr1 = this.getArray();
-            for(int i = 0;i<this.getRow();i++) {
-                arr3[i] = arr1[i]*arr2[i];
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            double[] d = this.getArray();
+            double[] d1 = m1.getArray();
+            for(int i = 0;i<getRow();i++){
+                for(int j = 0;j<getColoumn();j++){
+                    arr3[i][j] = d[i]*d1[i];
+                }
             }
-            Matrix m = new Coloumn_Matrix(getRow(),getColoumn(),arr3,"Temp");
-            double[][] arr4 = m.transpose_1();
-            return arr4;
+            return arr3;
         }
         else{
             System.out.println("Cannot be multiplied");
@@ -1441,25 +1441,25 @@ class Coloumn_Matrix extends Matrix{
     double[][] div_1(Matrix m1){
         if(this.getRow()==m1.getRow() && this.getColoumn()==m1.getColoumn()){
 
-            double[] arr3 = new double[this.getRow()];
+            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
             double[] arr2 = m1.getArray();
             double[] arr1 = this.getArray();
             boolean pres = true;
             for(int i = 0;i<this.getRow();i++){
-                if(arr2[i]!=0) {
-                    arr3[i] = arr1[i]/arr2[i];
-                }
-                else{
-                    pres = false;
+                for(int j = 0;j<this.getColoumn();j++){
+                    if(arr2[i]!=0) {
+                        arr3[i][j] = arr1[i]/arr2[i];
+                    }
+                    else{
+                        pres = false;
+                    }
                 }
             }
             if(!pres) {
                 System.out.println("Division by zero not possible: ERROR");
                 return null;
             }
-            Matrix m = new Coloumn_Matrix(getRow(),getColoumn(),arr3,"Temp");
-            double[][] arr4 = m.transpose_1();
-            return arr4;
+            return arr3;
         }
         System.out.println("Cannot be divided");
         return null;
@@ -1491,19 +1491,17 @@ class Singleton_Matrix extends Matrix{
     }
     @Override
     public void get_Row_mean(){
-        for(int i = 0;i< get_intArr();i++){
-            System.out.print("Mean of row"+(i+1)+": ");
+            System.out.print("Mean of row1: ");
             System.out.print(get_intArr());
             System.out.println();
-        }
     }
     @Override
     public void get_Coloumn_mean(){
-        for(int i = 0;i< get_intArr();i++){
-            System.out.print("Mean of coloumn"+(i+1)+": ");
-            System.out.print(get_intArr());
-            System.out.println();
-        }
+
+        System.out.print("Mean of coloumn1: ");
+        System.out.print(get_intArr());
+        System.out.println();
+
     }
     @Override
     public double[][] transpose_1(){
