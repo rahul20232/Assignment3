@@ -487,10 +487,10 @@ class Matrix{
                 }
             }
             return arr3;
-    }
-    else{
-        System.out.println("These matrices cannot be added");
-        return null;
+        }
+        else{
+            System.out.println("These matrices cannot be added");
+            return null;
         }
     }
     double[][] sub(Matrix m1){
@@ -1199,7 +1199,7 @@ class Row_Matrix extends Matrix{
                 for(int i = 0;i<arr3.length;i++){
                     for(int j = 0;j<arr3[i].length;j++){
                         for(int r = 0;r<getColoumn();r++)
-                        arr3[i][j] += this.getArray()[r];
+                            arr3[i][j] += this.getArray()[r];
                     }
                 }
             }
@@ -1510,9 +1510,9 @@ class Singleton_Matrix extends Matrix{
     }
     @Override
     public void get_Row_mean(){
-            System.out.print("Mean of row1: ");
-            System.out.print(get_intArr());
-            System.out.println();
+        System.out.print("Mean of row1: ");
+        System.out.print(get_intArr());
+        System.out.println();
     }
     @Override
     public void get_Coloumn_mean(){
@@ -2335,9 +2335,17 @@ class Ones_Matrix extends Matrix{
                 }
             }
             else if(!flag4){
-                for(int i = 0;i<this.getRow();i++){
+                double[][] arr_x = new double[m1.getRow()][m1.getColoumn()];
+                for(int i = 0;i<m1.getRow();i++){
                     for(int j = 0;j<m1.getColoumn();j++){
-                        arr3[i][j] = this.getColoumn();
+                        arr_x[i][j] = 1;
+                    }
+                }
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++) {
+                        for(int r = 0;r<m1.getRow();r++){
+                            arr3[i][j] += arr_x[r][j];
+                        }
                     }
                 }
             }
@@ -2535,7 +2543,7 @@ class Ones_Matrix extends Matrix{
             else if(!flag4){
                 for(int i = 0;i<this.getRow();i++){
                     for(int j =0;j<this.getColoumn();j++){
-                            arr3[i][j] = 1;
+                        arr3[i][j] = 1;
                     }
                 }
             }
@@ -3227,7 +3235,7 @@ class Symmetric_Matrix extends Matrix{
         super.Total_mean();
     }
     double[][] compute_transpose_addition(){
-         return super.compute_transpose_addition();
+        return super.compute_transpose_addition();
     }
     double[][] adj_2(){
         return super.adj_2();
@@ -3294,7 +3302,7 @@ class Skew_Symmetric_Matrix extends Matrix{
         super.Total_mean();
     }
     double[][] compute_transpose_addition(){
-         return super.compute_transpose_addition();
+        return super.compute_transpose_addition();
     }
     double[][] adj_2(){
         return super.adj_2();
@@ -3358,7 +3366,7 @@ class Upper_Tringular_Matrix extends Matrix{
         super.Total_mean();
     }
     double[][] compute_transpose_addition(){
-         return super.compute_transpose_addition();
+        return super.compute_transpose_addition();
     }
     double[][] adj_2(){
         return super.adj_2();
@@ -4799,7 +4807,7 @@ class Diagonal_Matrix extends Matrix{
     double[][] eigenvector(){
         return super.eigenvector();
     }
-    }
+}
 public class Main {
     public static void main(String[] args) {
         boolean flag = true;
@@ -5417,34 +5425,34 @@ public class Main {
 
                         System.out.println("Enter no. of coloumns: ");
                         int coloumn = sc.nextInt();
-                            double[][] arr = new double[1][coloumn];
-                            System.out.println("Enter elements of matrix");
-                            for(int i = 0;i<1;i++){
-                                System.out.println("Enter elements of "+(i+1)+"th row");
-                                for(int j = 0;j<coloumn;j++){
-                                    arr[i][j] = sc.nextInt();
-                                }
+                        double[][] arr = new double[1][coloumn];
+                        System.out.println("Enter elements of matrix");
+                        for(int i = 0;i<1;i++){
+                            System.out.println("Enter elements of "+(i+1)+"th row");
+                            for(int j = 0;j<coloumn;j++){
+                                arr[i][j] = sc.nextInt();
                             }
-                            Matrix m = new Matrix(1,coloumn,arr,name);
-                            Matrix x1 = m.set_Matrix();
-                            matrices.add(x1);
+                        }
+                        Matrix m = new Matrix(1,coloumn,arr,name);
+                        Matrix x1 = m.set_Matrix();
+                        matrices.add(x1);
 
                     }
                     if(inp==3){
                         System.out.println("Enter no. of rows: ");
                         int row = sc.nextInt();
 
-                            double[][] arr = new double[row][1];
-                            System.out.println("Enter elements of matrix");
-                            for(int i = 0;i<row;i++){
-                                System.out.println("Enter elements of "+(i+1)+"th row");
-                                for(int j = 0;j<1;j++){
-                                    arr[i][j] = sc.nextInt();
-                                }
+                        double[][] arr = new double[row][1];
+                        System.out.println("Enter elements of matrix");
+                        for(int i = 0;i<row;i++){
+                            System.out.println("Enter elements of "+(i+1)+"th row");
+                            for(int j = 0;j<1;j++){
+                                arr[i][j] = sc.nextInt();
                             }
-                            Matrix m = new Matrix(row,1,arr,name);
-                            Matrix x1 = m.set_Matrix();
-                            matrices.add(x1);
+                        }
+                        Matrix m = new Matrix(row,1,arr,name);
+                        Matrix x1 = m.set_Matrix();
+                        matrices.add(x1);
 
                     }
                     if(inp==4){
@@ -5728,12 +5736,12 @@ public class Main {
                         }
                     }
                     if(inp==13){
-                            double[][] arr = new double[1][1];
-                            System.out.println("Enter value:");
-                            arr[0][0] = sc.nextInt();
-                            Matrix m = new Matrix(1,1,arr,name);
-                            Matrix x1 = m.set_Matrix();
-                            matrices.add(x1);
+                        double[][] arr = new double[1][1];
+                        System.out.println("Enter value:");
+                        arr[0][0] = sc.nextInt();
+                        Matrix m = new Matrix(1,1,arr,name);
+                        Matrix x1 = m.set_Matrix();
+                        matrices.add(x1);
 
                     }
                     if(inp==14){
