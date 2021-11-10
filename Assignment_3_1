@@ -92,8 +92,8 @@ class Matrix{
     }
     double[][] transpose_1(){
         double[][] trans = new double[this.coloumn][this.row];
-        for(int i = 0;i< arr.length;i++){
-            for(int j = 0;j<arr[i].length;j++){
+        for(int i = 0;i< trans.length;i++){
+            for(int j = 0;j< trans[i].length;j++){
                 trans[i][j] = arr[j][i];
             }
         }
@@ -762,7 +762,7 @@ class Rectangular_Matrix extends Matrix{
         return super.mul(m1);
     }
     double[][] mul_1(Matrix m1){
-        return super.mul(m1);
+        return super.mul_1(m1);
     }
     double[][] div_1(Matrix m1){return super.div_1(m1);}
 }
@@ -817,7 +817,7 @@ class Square_Matrix extends Matrix{
         return super.mul(m1);
     }
     double[][] mul_1(Matrix m1){
-        return super.mul(m1);
+        return super.mul_1(m1);
     }
     double[][] div_1(Matrix m1){return super.div_1(m1);}
     ArrayList eigenvalue(){
@@ -1246,7 +1246,12 @@ class Singleton_Matrix extends Matrix{
     public Singleton_Matrix(int row, int coloumn, double arr, String name) {
         super(row, coloumn, arr, name);
         super.setMatrix_type("Singleton Matrix");
+        super.setMatrix_type("Scalar Matrix");
+        super.setMatrix_type("Symmetric Matrix");
+        super.setMatrix_type("Diagonal Matrix");
         super.setMatrix_type("Square Matrix");
+        super.setMatrix_type("Coloumn Matrix");
+        super.setMatrix_type("Row Matrix");
     }
     double get_intArr(){
         return super.get_intArr();
@@ -3004,7 +3009,7 @@ class Symmetric_Matrix extends Matrix{
     }
 
     double[][] mul_1(Matrix m1){
-        return super.mul(m1);
+        return super.mul_1(m1);
     }
     double[][] div_1(Matrix m1){return super.div_1(m1);}
 
@@ -3020,6 +3025,9 @@ class Skew_Symmetric_Matrix extends Matrix{
         super(row, coloumn, arr, name);
         super.setMatrix_type("Skew Symmetric Matrix");
         super.setMatrix_type("Square Matrix");
+        if(determinant()==0){
+            super.setMatrix_type("Singular Matrix");
+        }
     }
     public int getRow(){
         return super.getRow();
@@ -3068,7 +3076,7 @@ class Skew_Symmetric_Matrix extends Matrix{
     }
 
     double[][] mul_1(Matrix m1){
-        return super.mul(m1);
+        return super.mul_1(m1);
     }
     double[][] div_1(Matrix m1){return super.div_1(m1);}
 
@@ -3131,7 +3139,7 @@ class Upper_Tringular_Matrix extends Matrix{
         return super.mul(m1);
     }
     double[][] mul_1(Matrix m1){
-        return super.mul(m1);
+        return super.mul_1(m1);
     }
     double[][] div_1(Matrix m1){return super.div_1(m1);}
     ArrayList eigenvalue(){
@@ -3193,7 +3201,7 @@ class Lower_Tringular_Matrix extends Matrix{
         return super.mul(m1);
     }
     double[][] mul_1(Matrix m1){
-        return super.mul(m1);
+        return super.mul_1(m1);
     }
     double[][] div_1(Matrix m1){return super.div_1(m1);}
     ArrayList eigenvalue(){
@@ -3252,7 +3260,7 @@ class Singular_Matrix extends Matrix{
         return super.mul(m1);
     }
     double[][] mul_1(Matrix m1){
-        return super.mul(m1);
+        return super.mul_1(m1);
     }
     double[][] div_1(Matrix m1){return super.div_1(m1);}
     ArrayList eigenvalue(){
@@ -4747,15 +4755,20 @@ public class Main {
                         }
                     }
                     double[][] arr2 = x2.inverse_2();
-                    Matrix x3 = new Matrix(x2.getRow(),x2.getColoumn(),arr2,x2.getName()+"_inv");
-                    double[][] x4 = x1.mul(x3);
-                    if(x4!=null){
-                        for(int i = 0;i<x4.length;i++){
-                            for(int j = 0;j<x4[i].length;j++){
-                                System.out.print(x4[i][j]+" | ");
+                    if(arr2!=null){
+                        Matrix x3 = new Matrix(x2.getRow(),x2.getColoumn(),arr2,x2.getName()+"_inv");
+                        double[][] x4 = x1.mul(x3);
+                        if(x4!=null){
+                            for(int i = 0;i<x4.length;i++){
+                                for(int j = 0;j<x4[i].length;j++){
+                                    System.out.print(x4[i][j]+" | ");
+                                }
+                                System.out.println();
                             }
-                            System.out.println();
                         }
+                    }
+                    else{
+                        System.out.println("Cannot perform operation");
                     }
                 }
             }
@@ -4967,7 +4980,12 @@ public class Main {
                         x1 = matrices.get(i);
                     }
                 }
-                System.out.println(x1.determinant());
+                if(x1.determinant()!=0.0){
+                    System.out.println(x1.determinant());
+                }
+                else{
+                    System.out.println("Cannot compute determinant");
+                }
             }
             if(x==9){
                 System.out.println("Enter name of Matrix: ");
@@ -5512,22 +5530,6 @@ public class Main {
             }
             if(x==17){
                 flag = false;
-            }
-            if(x==18){
-                System.out.println("Enter name");
-                String name = sc.next();
-                Matrix x1 = null;
-                for(int i = 0;i<matrices.size();i++){
-                    if(matrices.get(i).getName().equals(name)){
-                        x1 = matrices.get(i);
-                    }
-                }
-                for(int i = 0;i< x1.getRow();i++){
-                    for(int j = 0;j<x1.getColoumn();j++){
-                        System.out.print(x1.getArr()[i][j]+" | ");
-                    }
-                    System.out.println();
-                }
             }
         }
 
