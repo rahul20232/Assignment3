@@ -527,6 +527,81 @@ class Matrix{
         return null;
 
     }
+    double[][] eigenvector(){
+        if(this.getRow()==this.getColoumn()){
+            boolean flag1 = true;
+            boolean flag2 = true;
+            boolean flag3 = true;
+            boolean flag4 = true;
+            boolean flag5 = true;
+            double[][] D = new double[2][1];
+            for(int i = 0;i<this.get_Matrix_type().size();i++){
+                if(this.get_Matrix_type().get(i).equals("Diagonal Matrix")){
+                    flag1 = false;
+                }
+                if(this.get_Matrix_type().get(i).equals("Scalar Matrix")){
+                    flag2 = false;
+                }
+                if(this.get_Matrix_type().get(i).equals("Identity Matrix")){
+                    flag3 = false;
+                }
+                if(this.get_Matrix_type().get(i).equals("Ones Matrix")){
+                    flag4 = false;
+                }
+                if(this.get_Matrix_type().get(i).equals("Null Matrix")){
+                    flag5 = false;
+                }
+            }
+            if(!flag5) {
+                D[0][0] = 0.0;
+                D[1][0] = 0.0;
+                return D;
+            }
+            if(!flag4){
+                D[0][0] = 1.0;
+                D[1][0] = -1.0;
+                return D;
+            }
+            if(!flag3){
+                D[0][0] = 0.0;
+                D[1][0] = 0.0;
+                return D;
+            }
+            if(!flag2){
+                D[0][0] = 0.0;
+                D[1][0] = 0.0;
+                return D;
+            }
+            if(!flag1){
+                D[0][0] = 0.0;
+                D[1][0] = 0.0;
+                return D;
+            }
+            else{
+                double c1 = getArr()[0][0];
+                double c2 = getArr()[1][1];
+                double c3 = getArr()[0][1];
+                double c4 = getArr()[1][0];
+                double D1 = Math.pow((c1+c2),2)-4*(c1*c2-c3*c4);
+                double lambda1 = ((c1+c2) + Math.sqrt(D1))/4;
+                double lambda2 = ((c1+c2) - Math.sqrt(D1))/4;
+                double[][] arr1 = getArr();
+                for(int i = 0;i<arr1.length;i++){
+                    for(int j = 0;j<arr1[i].length;j++){
+                        if(i==j){
+                            arr1[i][j] -= lambda1;
+                        }
+                    }
+                }
+                D[0][0] = arr1[0][1];
+                D[1][0] = -arr1[1][0];
+                return D;
+            }
+        }
+        System.out.println("Cannot be acheived");
+        return null;
+
+    }
     double[][] mul_1(Matrix m1){
         double[][] arr1 = this.getArr();
         double[][] arr2 = m1.getArr();
@@ -747,6 +822,9 @@ class Square_Matrix extends Matrix{
     double[][] div_1(Matrix m1){return super.div_1(m1);}
     ArrayList eigenvalue(){
         return super.eigenvalue();
+    }
+    double[][] eigenvector(){
+        return super.eigenvector();
     }
 }
 class Row_Matrix extends Matrix{
@@ -973,7 +1051,7 @@ class Row_Matrix extends Matrix{
         System.out.println("Cannot be divided");
         return null;
     }
-    
+
 }
 class Coloumn_Matrix extends Matrix{
 
@@ -1162,7 +1240,7 @@ class Coloumn_Matrix extends Matrix{
         System.out.println("Cannot be divided");
         return null;
     }
-    
+
 }
 class Singleton_Matrix extends Matrix{
     public Singleton_Matrix(int row, int coloumn, double arr, String name) {
@@ -1693,6 +1771,9 @@ class Null_Matrix extends Matrix{
 
     ArrayList eigenvalue(){
         return super.eigenvalue();
+    }
+    double[][] eigenvector(){
+        return super.eigenvector();
     }
 }
 class Ones_Matrix extends Matrix{
@@ -2245,6 +2326,9 @@ class Ones_Matrix extends Matrix{
 
     ArrayList eigenvalue(){
         return super.eigenvalue();
+    }
+    double[][] eigenvector(){
+        return super.eigenvector();
     }
 }
 class Identity_Matrix extends Matrix{
@@ -2860,6 +2944,9 @@ class Identity_Matrix extends Matrix{
     ArrayList eigenvalue(){
         return super.eigenvalue();
     }
+    double[][] eigenvector(){
+        return super.eigenvector();
+    }
 }
 class Symmetric_Matrix extends Matrix{
     public Symmetric_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -2924,6 +3011,9 @@ class Symmetric_Matrix extends Matrix{
     ArrayList eigenvalue(){
         return super.eigenvalue();
     }
+    double[][] eigenvector(){
+        return super.eigenvector();
+    }
 }
 class Skew_Symmetric_Matrix extends Matrix{
     public Skew_Symmetric_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -2985,6 +3075,9 @@ class Skew_Symmetric_Matrix extends Matrix{
     ArrayList eigenvalue(){
         return super.eigenvalue();
     }
+    double[][] eigenvector(){
+        return super.eigenvector();
+    }
 }
 class Upper_Tringular_Matrix extends Matrix{
     public Upper_Tringular_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -3043,6 +3136,9 @@ class Upper_Tringular_Matrix extends Matrix{
     double[][] div_1(Matrix m1){return super.div_1(m1);}
     ArrayList eigenvalue(){
         return super.eigenvalue();
+    }
+    double[][] eigenvector(){
+        return super.eigenvector();
     }
 }
 class Lower_Tringular_Matrix extends Matrix{
@@ -3103,6 +3199,9 @@ class Lower_Tringular_Matrix extends Matrix{
     ArrayList eigenvalue(){
         return super.eigenvalue();
     }
+    double[][] eigenvector(){
+        return super.eigenvector();
+    }
 }
 class Singular_Matrix extends Matrix{
     public Singular_Matrix(int row, int coloumn, double[][] arr, String name) {
@@ -3158,6 +3257,9 @@ class Singular_Matrix extends Matrix{
     double[][] div_1(Matrix m1){return super.div_1(m1);}
     ArrayList eigenvalue(){
         return super.eigenvalue();
+    }
+    double[][] eigenvector(){
+        return super.eigenvector();
     }
 
 }
@@ -3800,6 +3902,9 @@ class Scalar_Matrix extends Matrix{
     ArrayList eigenvalue(){
         return super.eigenvalue();
     }
+    double[][] eigenvector(){
+        return super.eigenvector();
+    }
 }
 class Diagonal_Matrix extends Matrix{
     public Diagonal_Matrix(int row, int coloumn, double[] arr, String name) {
@@ -4440,6 +4545,9 @@ class Diagonal_Matrix extends Matrix{
     ArrayList eigenvalue(){
         return super.eigenvalue();
     }
+    double[][] eigenvector(){
+        return super.eigenvector();
+    }
     }
 public class Main {
     public static void main(String[] args) {
@@ -4752,63 +4860,6 @@ public class Main {
                     }
                 }
             }
-            if(x==16){
-                System.out.println("Enter name");
-                String name = sc.next();
-                Matrix x1 = null;
-                for(int i = 0;i<matrices.size();i++){
-                    if(matrices.get(i).getName().equals(name)){
-                        x1 = matrices.get(i);
-                    }
-                }
-                for(int i = 0;i< x1.getRow();i++){
-                    for(int j = 0;j<x1.getColoumn();j++){
-                        System.out.print(x1.getArr()[i][j]+" | ");
-                    }
-                    System.out.println();
-                }
-            }
-            if(x==7){
-                System.out.println("----------------");
-                System.out.println("1. Row-wise mean");
-                System.out.println("2. Coloumn-wise mean");
-                System.out.println("3. Mean of all elements");
-
-                int n = sc.nextInt();
-                if(n==1){
-                    System.out.println("Enter name of Matrix: ");
-                    String name = sc.next();
-                    Matrix x1 = null;
-                    for(int i = 0;i<matrices.size();i++){
-                        if(matrices.get(i).getName().equals(name)){
-                            x1 = matrices.get(i);
-                        }
-                    }
-                    x1.get_Row_mean();
-                }
-                if(n==2){
-                    System.out.println("Enter name of Matrix: ");
-                    String name = sc.next();
-                    Matrix x1 = null;
-                    for(int i = 0;i<matrices.size();i++){
-                        if(matrices.get(i).getName().equals(name)){
-                            x1 = matrices.get(i);
-                        }
-                    }
-                    x1.get_Coloumn_mean();
-                }
-                if(n==3){
-                    System.out.println("Enter name of Matrix: ");
-                    String name = sc.next();
-                    Matrix x1 = null;
-                    for(int i = 0;i<matrices.size();i++){
-                        if(matrices.get(i).getName().equals(name)){
-                            x1 = matrices.get(i);
-                        }
-                    }
-                    x1.Total_mean();
-                }
-            }
             if(x==5){
                 System.out.println("Enter name of Matrix: ");
                 String name = sc.next();
@@ -4852,6 +4903,47 @@ public class Main {
                 }
                 else{
                     System.out.println("Cannot be inversed");
+                }
+            }
+            if(x==7){
+                System.out.println("----------------");
+                System.out.println("1. Row-wise mean");
+                System.out.println("2. Coloumn-wise mean");
+                System.out.println("3. Mean of all elements");
+
+                int n = sc.nextInt();
+                if(n==1){
+                    System.out.println("Enter name of Matrix: ");
+                    String name = sc.next();
+                    Matrix x1 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            x1 = matrices.get(i);
+                        }
+                    }
+                    x1.get_Row_mean();
+                }
+                if(n==2){
+                    System.out.println("Enter name of Matrix: ");
+                    String name = sc.next();
+                    Matrix x1 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            x1 = matrices.get(i);
+                        }
+                    }
+                    x1.get_Coloumn_mean();
+                }
+                if(n==3){
+                    System.out.println("Enter name of Matrix: ");
+                    String name = sc.next();
+                    Matrix x1 = null;
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            x1 = matrices.get(i);
+                        }
+                    }
+                    x1.Total_mean();
                 }
             }
             if(x==8){
@@ -4908,9 +5000,6 @@ public class Main {
                     System.out.println("Transpose addition cannot happen");
                 }
             }
-            if(x==15){
-                flag = false;
-            }
             if(x==11){
                 System.out.println("Enter name of Matrix: ");
                 String name = sc.next();
@@ -4929,6 +5018,26 @@ public class Main {
                 System.out.println();
             }
             if(x==12){
+                System.out.println("Enter name of Matrix: ");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                double[][] c = x1.eigenvector();
+                if(c!=null){
+                    for(int i = 0;i<c.length;i++){
+                        for(int j = 0;j<c[i].length;j++){
+                            System.out.print(c[i][j]+" | ");
+                        }
+                        System.out.println();
+                    }
+                }
+                System.out.println();
+            }
+            if(x==13){
                 System.out.println("Enter no. of equations");
                 int n = sc.nextInt();
                 System.out.println("Enter no. of variables");
@@ -4960,7 +5069,7 @@ public class Main {
                     System.out.println("Cannot solve");
                 }
             }
-            if(x==14){
+            if(x==15){
                 System.out.println("Enter requested matrix-type labels");
                 sc.nextLine();
                 String type = sc.nextLine();
@@ -4972,7 +5081,7 @@ public class Main {
                     }
                 }
             }
-            if(x==13){
+            if(x==14){
                 System.out.print("Enter name of singleton matrice:");
                 String name = sc.next();
                 System.out.print("Enter name of matrice to be scaled:");
@@ -4997,6 +5106,25 @@ public class Main {
                     }
                 }
             }
+            if(x==16){
+                flag = false;
+            }
+            if(x==17){
+                System.out.println("Enter name");
+                String name = sc.next();
+                Matrix x1 = null;
+                for(int i = 0;i<matrices.size();i++){
+                    if(matrices.get(i).getName().equals(name)){
+                        x1 = matrices.get(i);
+                    }
+                }
+                for(int i = 0;i< x1.getRow();i++){
+                    for(int j = 0;j<x1.getColoumn();j++){
+                        System.out.print(x1.getArr()[i][j]+" | ");
+                    }
+                    System.out.println();
+                }
+            }
         }
 
     }
@@ -5013,9 +5141,10 @@ public class Main {
         System.out.println("9. Display Labels");
         System.out.println("10. A + A(T)");
         System.out.println("11. Compute Eigen Value");
-        System.out.println("12. Solve linear equations");
-        System.out.println("13. Use singleton matrices as scalars");
-        System.out.println("14. Retrieve all the existing matrices (entered or created) having requested matrix-type labels.");
-        System.out.println("15. Exit");
+        System.out.println("12. Compute Eigen Vector");
+        System.out.println("13. Solve linear equations");
+        System.out.println("14. Use singleton matrices as scalars");
+        System.out.println("15. Retrieve all the existing matrices (entered or created) having requested matrix-type labels.");
+        System.out.println("16. Exit");
     }
 }
