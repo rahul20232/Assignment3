@@ -1633,12 +1633,29 @@ class Null_Matrix extends Matrix{
         super(row, coloumn, name);
         super.setMatrix_type("Null Matrix");
         if(row==coloumn){
-            super.setMatrix_type("Symmetric Matrix");
-            super.setMatrix_type("Skew Symmetric Matrix");
-            super.setMatrix_type("Singular Matrix");
-            super.setMatrix_type("Square Matrix");
+            if(row==1){
+                super.setMatrix_type("Symmetric Matrix");
+                super.setMatrix_type("Skew Symmetric Matrix");
+                super.setMatrix_type("Singleton Matrix");
+                super.setMatrix_type("Square Matrix");
+                super.setMatrix_type("Singular Matrix");
+                super.setMatrix_type("Coloumn Matrix");
+                super.setMatrix_type("Row Matrix");
+            }
+            else{
+                super.setMatrix_type("Symmetric Matrix");
+                super.setMatrix_type("Skew Symmetric Matrix");
+                super.setMatrix_type("Singular Matrix");
+                super.setMatrix_type("Square Matrix");
+            }
         }
         else{
+            if(row==1){
+                super.setMatrix_type("Row Matrix");
+            }
+            if(coloumn==1){
+                super.setMatrix_type("Coloumn Matrix");
+            }
             super.setMatrix_type("Rectangular Matrix");
         }
     }
@@ -2027,11 +2044,29 @@ class Ones_Matrix extends Matrix{
         super(row, coloumn, name);
         super.setMatrix_type("Ones Matrix");
         if(row==coloumn){
-            super.setMatrix_type("Symmetric Matrix");
-            super.setMatrix_type("Singular Matrix");
-            super.setMatrix_type("Square Matrix");
+            if(row==1){
+                super.setMatrix_type("Symmetric Matrix");
+                super.setMatrix_type("Identity Matrix");
+                super.setMatrix_type("Singleton Matrix");
+                super.setMatrix_type("Square Matrix");
+                super.setMatrix_type("Scalar Matrix");
+                super.setMatrix_type("Diagonal Matrix");
+                super.setMatrix_type("Coloumn Matrix");
+                super.setMatrix_type("Row Matrix");
+            }
+            else{
+                super.setMatrix_type("Symmetric Matrix");
+                super.setMatrix_type("Singular Matrix");
+                super.setMatrix_type("Square Matrix");
+            }
         }
         else{
+            if(row==1){
+                super.setMatrix_type("Row Matrix");
+            }
+            if(coloumn==1){
+                super.setMatrix_type("Coloumn Matrix");
+            }
             super.setMatrix_type("Rectangular Matrix");
         }
     }
