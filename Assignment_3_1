@@ -684,12 +684,31 @@ class Matrix{
                     }
                 }
             }
+
             else{
-                double[][] arr2 = m1.getArr();
-                for(int i = 0;i<this.getRow();i++){
-                    for(int j = 0;j<m1.getColoumn();j++) {
-                        for(int r = 0;r<m1.getRow();r++){
-                            arr3[i][j] += arr1[i][r]*arr2[r][j];
+                if(m1.getColoumn()!=1){
+                    double[][] arr2 = m1.getArr();
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++) {
+                            for(int r = 0;r<m1.getRow();r++){
+                                arr3[i][j] += arr1[i][r]*arr2[r][j];
+                            }
+                        }
+                    }
+                }
+                else{
+                    double[] arr2 = m1.getArray();
+                    double[][] arr_x = new double[m1.getRow()][m1.getColoumn()];
+                    for(int i = 0;i<m1.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++){
+                            arr_x[i][j] = arr2[i];
+                        }
+                    }
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++) {
+                            for(int r = 0;r<m1.getRow();r++){
+                                arr3[i][j] += arr1[i][r]*arr_x[r][j];
+                            }
                         }
                     }
                 }
@@ -2434,18 +2453,36 @@ class Ones_Matrix extends Matrix{
                 }
             }
             else{
-                double[][] arr2 = m1.getArr();
-                double[][] arr_x = new double[this.getRow()][this.getColoumn()];
-                for(int i = 0;i<this.getRow();i++){
-                    for(int j = 0;j<this.getColoumn();j++){
-                        arr_x[i][j] = 1;
+                if(m1.getColoumn()!=1){
+                    double[][] arr2 = m1.getArr();
+                    double[][] arr_x = new double[this.getRow()][this.getColoumn()];
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<this.getColoumn();j++){
+                            arr_x[i][j] = 1;
+                        }
+                    }
+
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++) {
+                            for(int r = 0;r<m1.getRow();r++){
+                                arr3[i][j] += arr2[r][j]*arr_x[i][r];
+                            }
+                        }
                     }
                 }
-
-                for(int i = 0;i<this.getRow();i++){
-                    for(int j = 0;j<m1.getColoumn();j++) {
-                        for(int r = 0;r<m1.getRow();r++){
-                            arr3[i][j] += arr2[r][j]*arr_x[i][r];
+                else{
+                    double[] arr2 = m1.getArray();
+                    double[][] arr_x = new double[m1.getRow()][m1.getColoumn()];
+                    for(int i = 0;i<m1.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++){
+                            arr_x[i][j] = arr2[i];
+                        }
+                    }
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++) {
+                            for(int r = 0;r<m1.getRow();r++){
+                                arr3[i][j] += 1*arr_x[r][j];
+                            }
                         }
                     }
                 }
@@ -3076,7 +3113,7 @@ class Identity_Matrix extends Matrix{
                     flag5 = false;
                 }
             }
-            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
             if(!flag5){
                 for(int i = 0;i<this.getRow();i++){
                     for(int j = 0;j<m1.getColoumn();j++){
@@ -3130,8 +3167,18 @@ class Identity_Matrix extends Matrix{
                 }
             }
             else{
-                double[][] arr2 = m1.getArr();
-                arr3 = arr2;
+                if(m1.getColoumn()!=1){
+                    double[][] arr2 = m1.getArr();
+                    arr3 = arr2;
+                }
+                else{
+                    double[] arr2 = m1.getArray();
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++){
+                            arr3[i][j] = arr2[i];
+                        }
+                    }
+                }
             }
             return arr3;
         }
@@ -4087,10 +4134,20 @@ class Scalar_Matrix extends Matrix{
                 }
             }
             else{
-                double[][] arr2 = m1.getArr();
-                for(int i = 0;i<this.getRow();i++){
-                    for(int j = 0;j<m1.getColoumn();j++) {
-                        arr3[i][j] += arr1*arr2[i][j];
+                if(m1.getColoumn()!=1){
+                    double[][] arr2 = m1.getArr();
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++) {
+                            arr3[i][j] += arr1*arr2[i][j];
+                        }
+                    }
+                }
+                else{
+                    double[] arr2 = m1.getArray();
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++) {
+                            arr3[i][j] += arr1*arr2[i];
+                        }
                     }
                 }
             }
@@ -4193,18 +4250,18 @@ class Scalar_Matrix extends Matrix{
                 }
             }
             else{
-                double arr1 = this.get_intArr();;
-                double[][] arr2 = m1.getArr();
-                for(int i = 0;i<this.getRow();i++){
-                    for(int j =0;j<this.getColoumn();j++){
-                        if (i == j) {
-                            arr3[i][j] = arr1*arr2[i][j];
-                        }
-                        else{
-                            arr3[i][j] = 0;
+                    double arr1 = this.get_intArr();;
+                    double[][] arr2 = m1.getArr();
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j =0;j<this.getColoumn();j++){
+                            if (i == j) {
+                                arr3[i][j] = arr1*arr2[i][j];
+                            }
+                            else{
+                                arr3[i][j] = 0;
+                            }
                         }
                     }
-                }
             }
             return arr3;
         }
@@ -4729,10 +4786,20 @@ class Diagonal_Matrix extends Matrix{
                 }
             }
             else{
-                double[][] arr2 = m1.getArr();
-                for(int i = 0;i<this.getRow();i++){
-                    for(int j = 0;j<m1.getColoumn();j++) {
-                        arr3[i][j] += arr1[i]*arr2[i][j];
+                if(m1.getColoumn()!=1){
+                    double[][] arr2 = m1.getArr();
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++) {
+                            arr3[i][j] += arr1[i]*arr2[i][j];
+                        }
+                    }
+                }
+                else{
+                    double[] arr2 = m1.getArray();
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++) {
+                            arr3[i][j] += arr1[i]*arr2[i];
+                        }
                     }
                 }
             }
@@ -5002,22 +5069,96 @@ public class Main {
                         x1 = matrices.get(i);
                     }
                 }
-                System.out.println("Enter row of element to be changed:");
-                int r = sc.nextInt();
-                System.out.println("Enter coloumn of element to be changed:");
-                int c = sc.nextInt();
                 boolean flag1 = true;
                 boolean flag2 = true;
                 boolean flag3 = true;
                 boolean flag4 = true;
-                boolean flag5 = true;
                 for(int i = 0;i<x1.get_Matrix_type().size();i++){
                     if(x1.get_Matrix_type().get(i).equals("Diagonal Matrix")){
                         flag1 = false;
                     }
+                    if(x1.get_Matrix_type().get(i).equals("Row Matrix")){
+                        flag2 = false;
+                    }
+                    if(x1.get_Matrix_type().get(i).equals("Coloumn Matrix")){
+                        flag3 = false;
+                    }
+                    if(x1.get_Matrix_type().get(i).equals("Singleton Matrix")){
+                        flag4 = false;
+                    }
                 }
                 Matrix x2;
-                if(!flag1 && r==c){
+                if(!flag4){
+                    System.out.println("Enter element to be replaced with:");
+                    double rep = sc.nextDouble();
+                    double[][] arr1 = new double[x1.getRow()][x1.getColoumn()];
+                    for(int i = 0;i<x1.getRow();i++){
+                        for(int j = 0;j<x1.getColoumn();j++){
+                            arr1[i][j] = rep;
+                        }
+                    }
+                    Matrix m = new Matrix(x1.getRow(),x1.getColoumn(),arr1,name);
+                    x2 = m.set_Matrix();
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            matrices.set(i,x2);
+                            System.out.println("Matrice changed");
+                        }
+                    }
+                }
+                else if(!flag1){
+                    System.out.println("Enter row of element to be changed:");
+                    int r = sc.nextInt();
+                    System.out.println("Enter coloumn of element to be changed:");
+                    int c = sc.nextInt();
+                    if(r==c){
+                        System.out.println("Enter element to be replaced with:");
+                        double rep = sc.nextDouble();
+                        double[] arr = x1.getArray();
+                        arr[r-1] = rep;
+                        double[][] arr1 = new double[x1.getRow()][x1.getColoumn()];
+                        for(int i = 0;i<x1.getRow();i++){
+                            for(int j = 0;j<x1.getColoumn();j++){
+                                if(i==j){
+                                    arr1[i][j] = arr[i];
+                                }
+                            }
+                        }
+                        Matrix m = new Matrix(x1.getRow(),x1.getColoumn(),arr1,name);
+                        x2 = m.set_Matrix();
+                        for(int i = 0;i<matrices.size();i++){
+                            if(matrices.get(i).getName().equals(name)){
+                                matrices.set(i,x2);
+                                System.out.println("Matrice changed");
+                            }
+                        }
+                    }
+                }
+                else if(!flag2){
+                    System.out.println("Enter coloumn of element to be changed:");
+                    int c = sc.nextInt();
+                    System.out.println("Enter element to be replaced with:");
+                    double rep = sc.nextDouble();
+                    double[] arr = x1.getArray();
+                    arr[c-1] = rep;
+                    double[][] arr1 = new double[x1.getRow()][x1.getColoumn()];
+                    for(int i = 0;i<x1.getRow();i++){
+                        for(int j = 0;j<x1.getColoumn();j++){
+                            arr1[i][j] = arr[j];
+                        }
+                    }
+                    Matrix m = new Matrix(x1.getRow(),x1.getColoumn(),arr1,name);
+                    x2 = m.set_Matrix();
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            matrices.set(i,x2);
+                            System.out.println("Matrice changed");
+                        }
+                    }
+                }
+                else if(!flag3){
+                    System.out.println("Enter row of element to be changed:");
+                    int r = sc.nextInt();
                     System.out.println("Enter element to be replaced with:");
                     double rep = sc.nextDouble();
                     double[] arr = x1.getArray();
@@ -5025,29 +5166,38 @@ public class Main {
                     double[][] arr1 = new double[x1.getRow()][x1.getColoumn()];
                     for(int i = 0;i<x1.getRow();i++){
                         for(int j = 0;j<x1.getColoumn();j++){
-                            if(i==j){
-                                arr1[i][j] = arr[i];
-                            }
+                            arr1[i][j] = arr[i];
                         }
                     }
                     Matrix m = new Matrix(x1.getRow(),x1.getColoumn(),arr1,name);
                     x2 = m.set_Matrix();
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            matrices.set(i,x2);
+                            System.out.println("Matrice changed");
+                        }
+                    }
                 }
                 else{
+                    System.out.println("Enter row of element to be changed:");
+                    int r = sc.nextInt();
+                    System.out.println("Enter coloumn of element to be changed:");
+                    int c = sc.nextInt();
+                    System.out.println("Enter element to be replaced with:");
                     double[][] arr= x1.getArr();
                     System.out.println("Enter element to be replaced with:");
                     double rep = sc.nextDouble();
                     arr[r-1][c-1] = rep;
                     Matrix m = new Matrix(x1.getRow(),x1.getColoumn(),arr,name);
                     x2 = m.set_Matrix();
-                }
-
-                for(int i = 0;i<matrices.size();i++){
-                    if(matrices.get(i).getName().equals(name)){
-                        matrices.set(i,x2);
-                        System.out.println("Matrice changed");
+                    for(int i = 0;i<matrices.size();i++){
+                        if(matrices.get(i).getName().equals(name)){
+                            matrices.set(i,x2);
+                            System.out.println("Matrice changed");
+                        }
                     }
                 }
+
             }
             if(x==3){
                 System.out.println("----------------");
@@ -5476,16 +5626,17 @@ public class Main {
                         System.out.println("Enter equation "+(i+1));
                         for(int j = 0;j < n1; j++){
                             System.out.println("Enter coefficient of x"+(j+1));
-                            arr[i][j] = sc.nextInt();
+                            arr[i][j] = sc.nextDouble();
                         }
                         System.out.println("Enter consonant");
-                        arr1[i][0] = sc.nextInt();
+                        arr1[i][0] = sc.nextDouble();
                     }
                     Matrix m = new Matrix(n,n1,arr,"Temp");
                     Matrix m1 = new Matrix(n,1,arr1,"Temp1");
+                    Matrix mx = m1.set_Matrix();
                     double[][] arr2 = m.inverse_2();
                     Matrix x3 = new Matrix(m.getRow(),m.getColoumn(),arr2,m.getName()+"_inv");
-                    double[][] x4 = x3.mul(m1);
+                    double[][] x4 = x3.mul(mx);
                     for(int i = 0;i<x4.length;i++){
                         for(int j = 0;j<x4[i].length;j++){
                             System.out.println("Value of x"+(i+1) +" = "+x4[i][j]);
