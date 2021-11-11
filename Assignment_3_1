@@ -5183,17 +5183,23 @@ public class Main {
                     int r = sc.nextInt();
                     System.out.println("Enter coloumn of element to be changed:");
                     int c = sc.nextInt();
-                    System.out.println("Enter element to be replaced with:");
                     double[][] arr= x1.getArr();
                     System.out.println("Enter element to be replaced with:");
                     double rep = sc.nextDouble();
                     arr[r-1][c-1] = rep;
                     Matrix m = new Matrix(x1.getRow(),x1.getColoumn(),arr,name);
+                    ArrayList A1 = x1.get_Matrix_type();
                     x2 = m.set_Matrix();
-                    for(int i = 0;i<matrices.size();i++){
-                        if(matrices.get(i).getName().equals(name)){
-                            matrices.set(i,x2);
-                            System.out.println("Matrice changed");
+                    boolean flag_x = true;
+                    if(A1.get(0).equals(x2.get_Matrix_type().get(0))==false){
+                        flag_x = false;
+                    }
+                    if(flag_x){
+                        for(int i = 0;i<matrices.size();i++){
+                            if(matrices.get(i).getName().equals(name)){
+                                matrices.set(i,x2);
+                                System.out.println("Matrice changed");
+                            }
                         }
                     }
                 }
