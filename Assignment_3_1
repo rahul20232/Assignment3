@@ -612,7 +612,7 @@ class Matrix{
                     flag5 = false;
                 }
             }
-            double[][] arr3 = new double[this.getRow()][this.getColoumn()];
+            double[][] arr3 = new double[this.getRow()][m1.getColoumn()];
             if(!flag5){
                 for(int i = 0;i<this.getRow();i++){
                     for(int j = 0;j<m1.getColoumn();j++){
@@ -1196,8 +1196,8 @@ class Row_Matrix extends Matrix{
                 }
             }
             else if(!flag4){
-                for(int i = 0;i<arr3.length;i++){
-                    for(int j = 0;j<arr3[i].length;j++){
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++){
                         for(int r = 0;r<getColoumn();r++)
                             arr3[i][j] += this.getArray()[r];
                     }
@@ -1208,16 +1208,16 @@ class Row_Matrix extends Matrix{
             }
             else if(!flag2){
                 double arr2 = m1.get_intArr();
-                for(int i = 0;i<arr3.length;i++){
-                    for(int j = 0;j<arr3[i].length;j++){
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++){
                         arr3[i][j] = this.getArray()[j]*arr2;
                     }
                 }
             }
             else if(!flag1){
                 double[] arr2 = m1.getArray();
-                for(int i = 0;i<arr3.length;i++){
-                    for(int j = 0;j<arr3[i].length;j++){
+                for(int i = 0;i<this.getRow();i++){
+                    for(int j = 0;j<m1.getColoumn();j++){
                         arr3[i][j] = this.getArray()[j]*arr2[j];
                     }
                 }
@@ -1225,8 +1225,8 @@ class Row_Matrix extends Matrix{
             else{
                 if(m1.getColoumn()!=1){
                     double[][] arr2 = m1.getArr();
-                    for(int i = 0;i<arr3.length;i++){
-                        for(int j = 0;j<arr3[i].length;j++){
+                    for(int i = 0;i<this.getRow();i++){
+                        for(int j = 0;j<m1.getColoumn();j++){
                             for(int r = 0;r<getColoumn();r++)
                                 arr3[i][j] += this.getArray()[r]*arr2[r][j];
                         }
@@ -4870,7 +4870,7 @@ public class Main {
                     for(int i = 0;i<row;i++){
                         System.out.println("Enter elements of "+(i+1)+"th row");
                         for(int j = 0;j<coloumn;j++){
-                            arr[i][j] = sc.nextInt();
+                            arr[i][j] = sc.nextDouble();
                         }
                     }
                     Matrix m = new Matrix(row,coloumn,arr,name);
@@ -4909,7 +4909,7 @@ public class Main {
                 Matrix x2;
                 if(!flag1 && r==c){
                     System.out.println("Enter element to be replaced with:");
-                    int rep = sc.nextInt();
+                    double rep = sc.nextDouble();
                     double[] arr = x1.getArray();
                     arr[r-1] = rep;
                     double[][] arr1 = new double[x1.getRow()][x1.getColoumn()];
@@ -4926,7 +4926,7 @@ public class Main {
                 else{
                     double[][] arr= x1.getArr();
                     System.out.println("Enter element to be replaced with:");
-                    int rep = sc.nextInt();
+                    double rep = sc.nextDouble();
                     arr[r-1][c-1] = rep;
                     Matrix m = new Matrix(x1.getRow(),x1.getColoumn(),arr,name);
                     x2 = m.set_Matrix();
@@ -5043,7 +5043,8 @@ public class Main {
                     double[][] arr2 = x2.inverse_2();
                     if(arr2!=null){
                         Matrix x3 = new Matrix(x2.getRow(),x2.getColoumn(),arr2,x2.getName()+"_inv");
-                        double[][] x4 = x1.mul(x3);
+                        Matrix x5 = x3.set_Matrix();
+                        double[][] x4 = x1.mul(x5);
                         if(x4!=null){
                             for(int i = 0;i<x4.length;i++){
                                 for(int j = 0;j<x4[i].length;j++){
@@ -5266,7 +5267,7 @@ public class Main {
                         x1 = matrices.get(i);
                     }
                 }
-                if(x1.determinant()!=0.0){
+                if(x1.getRow()==x1.getColoumn()){
                     System.out.println(x1.determinant());
                 }
                 else{
@@ -5445,7 +5446,7 @@ public class Main {
                             for(int i = 0;i<row;i++){
                                 System.out.println("Enter elements of "+(i+1)+"th row");
                                 for(int j = 0;j<coloumn;j++){
-                                    arr[i][j] = sc.nextInt();
+                                    arr[i][j] = sc.nextDouble();
                                 }
                             }
                             Matrix m = new Matrix(row,coloumn,arr,name);
@@ -5465,7 +5466,7 @@ public class Main {
                         for(int i = 0;i<1;i++){
                             System.out.println("Enter elements of "+(i+1)+"th row");
                             for(int j = 0;j<coloumn;j++){
-                                arr[i][j] = sc.nextInt();
+                                arr[i][j] = sc.nextDouble();
                             }
                         }
                         Matrix m = new Matrix(1,coloumn,arr,name);
@@ -5482,7 +5483,7 @@ public class Main {
                         for(int i = 0;i<row;i++){
                             System.out.println("Enter elements of "+(i+1)+"th row");
                             for(int j = 0;j<1;j++){
-                                arr[i][j] = sc.nextInt();
+                                arr[i][j] = sc.nextDouble();
                             }
                         }
                         Matrix m = new Matrix(row,1,arr,name);
@@ -5501,7 +5502,7 @@ public class Main {
                             for(int i = 0;i<row;i++){
                                 System.out.println("Enter elements of "+(i+1)+"th row");
                                 for(int j = 0;j<coloumn;j++){
-                                    arr[i][j] = sc.nextInt();
+                                    arr[i][j] = sc.nextDouble();
                                 }
                             }
                             Matrix m = new Matrix(row,coloumn,arr,name);
@@ -5521,28 +5522,28 @@ public class Main {
                             double[][] arr = new double[row][coloumn];
                             if(row==2){
                                 System.out.println("Enter elements of diagonal");
-                                arr[0][0] = sc.nextInt();
-                                arr[1][1] = sc.nextInt();
+                                arr[0][0] = sc.nextDouble();
+                                arr[1][1] = sc.nextDouble();
                                 System.out.println("Enter elements of first row");
-                                arr[0][0] = sc.nextInt();
-                                arr[0][1] = sc.nextInt();
+                                arr[0][0] = sc.nextDouble();
+                                arr[0][1] = sc.nextDouble();
                                 arr[1][0] = arr[0][1];
                             }
                             if(row==3){
                                 System.out.println("Enter elements of diagonal");
-                                arr[0][0] = sc.nextInt();
-                                arr[1][1] = sc.nextInt();
-                                arr[2][2] = sc.nextInt();
+                                arr[0][0] = sc.nextDouble();
+                                arr[1][1] = sc.nextDouble();
+                                arr[2][2] = sc.nextDouble();
                                 System.out.println("Enter elements of first row");
-                                arr[0][0] = sc.nextInt();
-                                arr[0][1] = sc.nextInt();
-                                arr[0][2] = sc.nextInt();
+                                arr[0][0] = sc.nextDouble();
+                                arr[0][1] = sc.nextDouble();
+                                arr[0][2] = sc.nextDouble();
                                 arr[1][0] = arr[0][1];
                                 arr[2][0] = arr[0][2];
                                 System.out.println("Enter elements of last coloumn ");
-                                arr[0][2] = sc.nextInt();
-                                arr[1][2] = sc.nextInt();
-                                arr[2][2] = sc.nextInt();
+                                arr[0][2] = sc.nextDouble();
+                                arr[1][2] = sc.nextDouble();
+                                arr[2][2] = sc.nextDouble();
                                 arr[2][1] = arr[1][2];
                             }
                             Matrix m = new Matrix(row,coloumn,arr,name);
@@ -5573,15 +5574,15 @@ public class Main {
                                 arr[1][1] = 0;
                                 arr[2][2] = 0;
                                 System.out.println("Enter elements of first row");
-                                arr[0][0] = sc.nextInt();
-                                arr[0][1] = sc.nextInt();
-                                arr[0][2] = sc.nextInt();
+                                arr[0][0] = sc.nextDouble();
+                                arr[0][1] = sc.nextDouble();
+                                arr[0][2] = sc.nextDouble();
                                 arr[1][0] = -arr[0][1];
                                 arr[2][0] = -arr[0][2];
                                 System.out.println("Enter elements of last coloumn ");
-                                arr[0][2] = sc.nextInt();
-                                arr[1][2] = sc.nextInt();
-                                arr[2][2] = sc.nextInt();
+                                arr[0][2] = sc.nextDouble();
+                                arr[1][2] = sc.nextDouble();
+                                arr[2][2] = sc.nextDouble();
                                 arr[2][1] = -arr[1][2];
                             }
                             Matrix m = new Matrix(row,coloumn,arr,name);
@@ -5603,7 +5604,7 @@ public class Main {
                             for(int i = 0;i<row;i++){
                                 System.out.println("Enter elements of "+(i+1)+"th row");
                                 for(int j = 0;j<coloumn;j++){
-                                    arr[i][j] = sc.nextInt();
+                                    arr[i][j] = sc.nextDouble();
                                 }
                             }
                             Matrix m = new Matrix(row,coloumn,arr,name);
@@ -5625,7 +5626,7 @@ public class Main {
                             for(int i = 0;i<row;i++){
                                 System.out.println("Enter elements of "+(i+1)+"th row");
                                 for(int j = 0;j<coloumn;j++){
-                                    arr[i][j] = sc.nextInt();
+                                    arr[i][j] = sc.nextDouble();
                                 }
                             }
                             Matrix m = new Matrix(row,coloumn,arr,name);
@@ -5647,7 +5648,7 @@ public class Main {
                             for(int i = 0;i<row;i++){
                                 System.out.println("Enter elements of "+(i+1)+"th row");
                                 for(int j = 0;j<coloumn;j++){
-                                    arr[i][j] = sc.nextInt();
+                                    arr[i][j] = sc.nextDouble();
                                 }
                             }
                             Matrix m = new Matrix(row,coloumn,arr,name);
@@ -5667,17 +5668,17 @@ public class Main {
                             double[][] arr = new double[row][coloumn];
                             if(row==2){
                                 System.out.println("Enter elements of diagonal");
-                                arr[0][0] = sc.nextInt();
-                                arr[1][1] = sc.nextInt();
+                                arr[0][0] = sc.nextDouble();
+                                arr[1][1] = sc.nextDouble();
 
                                 arr[0][1] = 0;
                                 arr[1][0] = 0;
                             }
                             if(row==3){
                                 System.out.println("Enter elements of diagonal");
-                                arr[0][0] = sc.nextInt();
-                                arr[1][1] = sc.nextInt();
-                                arr[2][2] = sc.nextInt();
+                                arr[0][0] = sc.nextDouble();
+                                arr[1][1] = sc.nextDouble();
+                                arr[2][2] = sc.nextDouble();
 
                                 arr[0][1] = 0;
                                 arr[0][2] = 0;
@@ -5704,7 +5705,7 @@ public class Main {
                             double[][] arr = new double[row][coloumn];
                             if(row==2){
                                 System.out.println("Enter scalar value");
-                                double s = sc.nextInt();
+                                double s = sc.nextDouble();
                                 arr[0][0] = s;
                                 arr[1][1] = s;
 
@@ -5713,7 +5714,7 @@ public class Main {
                             }
                             if(row==3){
                                 System.out.println("Enter elements of diagonal");
-                                double s = sc.nextInt();
+                                double s = sc.nextDouble();
                                 arr[0][0] = s;
                                 arr[1][1] = s;
                                 arr[2][2] = s;
@@ -5773,7 +5774,7 @@ public class Main {
                     if(inp==13){
                         double[][] arr = new double[1][1];
                         System.out.println("Enter value:");
-                        arr[0][0] = sc.nextInt();
+                        arr[0][0] = sc.nextDouble();
                         Matrix m = new Matrix(1,1,arr,name);
                         Matrix x1 = m.set_Matrix();
                         matrices.add(x1);
